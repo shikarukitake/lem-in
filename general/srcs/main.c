@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/11 15:37:21 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/08/11 16:14:01 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 int		main(int ac, char **av)
 {
+	t_lem	*lem;
 
-	ft_printf("hello\n");
+	lem = error_f(NULL, 1);
+	ft_printf("вудудуд\n");
+
+	free_lem(lem);
 	return (0);
 }

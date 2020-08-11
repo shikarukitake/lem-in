@@ -20,7 +20,7 @@ void		ft_error(void)
 
 void		ft_error_t(char const *text)
 {
-	write(2, "Error\n", 6);
+	write(2, "ERROR\n", 6);
 	write(2, text, ft_strlen(text));
 	write(2, "\n", 1);
 	exit(1);

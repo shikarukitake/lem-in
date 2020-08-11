@@ -3,11 +3,8 @@ NAME_1 = lem_in
 LIBFT_A = libftprintf.a
 
 SR_LI_1 =	main.c \
-			read_file.c \
+			reading.c \
 			service.c \
-			draw.c \
-			bresenham.c \
-			check.c \
 
 SOURCES_DIR = ./general/srcs/
 
@@ -39,8 +36,8 @@ all: $(LIB_RULE) $(NAME_1)
 %.lib:
 	@$(MAKE) -sC $(LIB_DIR)
 
-$(NAME_1): $(LIBFT) $(LIB_MLX) $(OBJECT_DIR_1) $(OBJ_LI_1)
-	@$(COMPILER) $(CFLAGS) $(IFLAGS) $(LIBFT) $(LIB_MLX) $(OBJ_LI_1) -o $(NAME_1) -framework OpenGL -framework AppKit
+$(NAME_1): $(LIBFT) $(OBJECT_DIR_1) $(OBJ_LI_1)
+	@$(COMPILER) $(CFLAGS) $(IFLAGS) $(LIBFT) $(OBJ_LI_1) -o $(NAME_1)
 
 $(OBJECT_DIR_1):
 	@mkdir -p $(OBJECT_DIR_1)
@@ -51,14 +48,10 @@ $(OBJECT_DIR_1)%.o : $(SOURCES_DIR)%.c $(HEADERS)
 $(LIBFT):
 	@make -C $(LIB_DIR)
 
-$(LIB_MLX):
-	@make -C $(MLX_DIR)
-
 clean:
 	@rm -rf $(OBJECT_DIR_1)
 	@make -C $(LIB_DIR) clean
 	@rm -rf $(OBJECT_PF)
-	@make -C $(MLX_DIR) clean
 
 fclean: clean
 	@make -C $(LIB_DIR) fclean
