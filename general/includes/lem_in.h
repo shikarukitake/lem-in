@@ -17,12 +17,15 @@ typedef struct	s_node
 	struct t_node	**neighbors;
 	int				x;
 	int				y;
+	int				n_len;
 }				t_node;
 
 typedef struct	s_grapg
 {
 	int		len;
 	t_node	**nodes;
+	int		start;
+	int		end;
 }				t_graph;
 
 typedef struct	s_lem

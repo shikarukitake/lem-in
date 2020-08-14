@@ -12,6 +12,8 @@ static t_lem	*init_lem()
 		lem->graph = NULL;
 		lem->temps = NULL;
 		lem->temps_d = NULL;
+		lem->next_start = 0;
+		lem->next_end = 0;
 		return (lem);
 	}
 }
