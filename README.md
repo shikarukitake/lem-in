@@ -1,6 +1,6 @@
 # Content
 
-1. [Project description](https://github.com/shikarukitake/lem-in#push_swap)
+1. [Project description](https://github.com/shikarukitake/lem-in#lem-in)
 2. [How to run](https://github.com/shikarukitake/lem-in#how-to-run)
 3. [Marks](https://github.com/shikarukitake/lem-in#marks)
 4. [Bonus](https://github.com/shikarukitake/lem-in#bonus)
