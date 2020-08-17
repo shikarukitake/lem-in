@@ -39,6 +39,29 @@ typedef struct	s_lem
 }				t_lem;
 
 /*
+** Dynamic Array
+*/
+
+typedef struct	s_dynamicarr
+{
+	t_node	**array;
+	int		len;
+	int		freespace;
+}				t_dynamicarr;
+
+int				init_darr(t_dynamicarr **arr);
+void			cpy_array(t_node **dest, t_node **src, int freeornot, int len);
+int				add_darr(t_dynamicarr **arr, t_node *value);
+void			print_darr(t_dynamicarr *arr);
+void			free_d_arr(t_dynamicarr **arr);
+
+/*
+** nodes
+*/
+
+void			free_nodes(t_node **arr, int free_neight);
+
+/*
 ** service
 */
 
