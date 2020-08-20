@@ -36,8 +36,8 @@ t_node		*find_node(const char *name, t_graph *graph)
 	t_node	**nodes;
 
 	i = 0;
-	nodes = graph->nodes;
-	while (i != graph->len)
+	nodes = graph->nodes->array;
+	while (i != graph->nodes->len)
 	{
 		if (!ft_strcmp(nodes[i]->name, name))
 			return (nodes[i]);
@@ -69,20 +69,15 @@ void		create_link(t_lem *lem)
 
 	f = find_node(lem->temps_d[0], lem->graph);
 	s = find_node(lem->temps_d[1], lem->graph);
-	if (f->neighbors == NULL)
-		if (!(f->neighbors = malloc(sizeof(t_node*) * 100))) //change
-			error_f("create link malloc", 0);
-	if (s->neighbors == NULL)
-		if (!(s->neighbors = malloc(sizeof(t_node*) * 100))) //change
-			error_f("create link malloc", 0);
-	if (in_neighbors(f->neighbors, f->n_len, s) == 0)
+
+	if (in_neighbors(f->neighbors->array, f->n_len, s) == 0)
 	{
-		f->neighbors[f->n_len] = s;
-		s->neighbors[s->n_len] = f;
+		if (!add_darr(&f->neighbors, s))
+			error_f("create_link add_darr malloc", 0);
+		if (!add_darr(&s->neighbors, f))
+			error_f("create_link add_darr malloc", 0);
 		f->n_len++;
 		s->n_len++;
-		f->neighbors[f->n_len] = NULL;
-		s->neighbors[s->n_len] = NULL;
 	}
 }
 
@@ -106,24 +101,19 @@ void		parse_links(t_lem *lem)
 
 void		parse_rooms(t_lem *lem)
 {
-	int len;
+	int				len;
+	t_node			*node;
+	t_dynamicarr	*nodes;
 
 	if (word_counter(lem->temps, ' ') == 3)
 	{
+		nodes = lem->graph->nodes;
 		lem->temps_d = ft_strsplit(lem->temps, ' ');
 		if (lem->temps_d == NULL)
 			error_f("parse rooms ft_strsplit malloc", 0);
-		if (lem->graph->nodes == NULL)
-			lem->graph->nodes = malloc(sizeof(t_node*) * 100); // change
-		len = lem->graph->len;
-		lem->graph->nodes[len] = malloc(sizeof(t_node));
-		if (lem->graph->nodes[len] == NULL)
-			error_f("parse rooms node malloc", 0);
-		lem->graph->nodes[len]->name = ft_strdup(lem->temps_d[0]);
-		lem->graph->nodes[len]->x = ft_atoi(lem->temps_d[1]);
-		lem->graph->nodes[len]->y = ft_atoi(lem->temps_d[2]);
-		lem->graph->nodes[len]->n_len = 0;
-		lem->graph->nodes[len]->neighbors = NULL;
+		node = new_node(ft_strdup(lem->temps_d[0]), lem->temps_d[1], lem->temps_d[2]);
+		if (!add_darr(&nodes, node))
+			error_f("parse rooms add_darr malloc", 0);
 		if (lem->next_start)
 		{
 			lem->graph->start = len;

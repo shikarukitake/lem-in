@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/17 19:15:10 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/08/20 18:34:16 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int		main(int ac, char **av)
 
 	lem = error_f(NULL, 1);
 	reading(lem);
-	t_dynamicarr *d_arr;
-	solve(lem);
+	print_graph(lem);
+//	solve(lem);
 	free_lem(lem);
 	return (0);
 }

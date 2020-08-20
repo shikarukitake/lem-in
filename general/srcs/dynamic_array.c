@@ -28,7 +28,7 @@ int				init_darr(t_dynamicarr **arr)
 					(((*arr)->len * 2) + 2))))
 				return (0);
 			cpy_array((*arr)->array, swap, 1, (*arr)->len);
-			(*arr)->freespace = (*arr)->len;
+			(*arr)->freespace = (*arr)->len;//check
 		}
 		else
 		{

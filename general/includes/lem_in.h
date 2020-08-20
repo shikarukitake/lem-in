@@ -7,6 +7,8 @@
 
 # include "libft.h"
 
+typedef struct s_dynamicarr t_dynamicarr;
+
 /*
 ** lem structures
 */
@@ -14,7 +16,7 @@
 typedef struct	s_node
 {
 	char			*name;
-	struct t_node	**neighbors;
+	t_dynamicarr	*neighbors;
 	int				x;
 	int				y;
 	int				n_len;
@@ -22,10 +24,10 @@ typedef struct	s_node
 
 typedef struct	s_grapg
 {
-	int		len;
-	t_node	**nodes;
-	int		start;
-	int		end;
+	int				len;
+	t_dynamicarr	*nodes;
+	int				start;
+	int				end;
 }				t_graph;
 
 typedef struct	s_lem
@@ -60,6 +62,7 @@ void			free_d_arr(t_dynamicarr **arr);
 */
 
 void			free_nodes(t_node **arr, int free_neight);
+t_node			*new_node(const char *name, const char *x, const char *y);
 
 /*
 ** service
