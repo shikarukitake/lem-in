@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/30 15:13:17 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/08/30 20:36:32 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	print_graph(t_lem *lem)
 	}
 }
 
-int		main(int ac, char **av)
+int		main()
 {
 	t_lem	*lem;
 
