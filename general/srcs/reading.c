@@ -46,10 +46,14 @@ t_node		*find_node(const char *name, t_graph *graph)
 	return (NULL);
 }
 
-int			in_neighbors(t_node **arr, int len, t_node *target)
+int			in_neighbors(t_dynamicarr *arr_d, int len, t_node *target)
 {
-	int	i;
+	int		i;
+	t_node	**arr;
 
+	if (arr_d == FT_NULL)
+		return (0);
+	arr = arr_d->array;
 	i = 0;
 	if (len == 0)
 		return (0);
@@ -70,7 +74,7 @@ void		create_link(t_lem *lem)
 	f = find_node(lem->temps_d[0], lem->graph);
 	s = find_node(lem->temps_d[1], lem->graph);
 
-	if (in_neighbors(f->neighbors->array, f->n_len, s) == 0)
+	if (in_neighbors(f->neighbors, f->n_len, s) == 0)
 	{
 		if (!add_darr(&f->neighbors, s))
 			error_f("create_link add_darr malloc", 0);
@@ -127,6 +131,7 @@ void		parse_rooms(t_lem *lem)
 		lem->graph->len++;
 		to_free_dstr(lem->temps_d);
 		lem->temps_d = NULL;
+		lem->graph->nodes = nodes;
 	}
 	else
 		error_f("invalid map: room", 0);

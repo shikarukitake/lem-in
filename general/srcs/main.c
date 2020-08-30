@@ -22,12 +22,12 @@ void	print_graph(t_lem *lem)
 	while (i != lem->graph->len)
 	{
 		j = 0;
-		node = lem->graph->nodes[i];
+		node = lem->graph->nodes->array[i];
 		ft_printf("Node name: %s\n", node->name);
 		ft_printf("Node's neighbors:\n");
 		while (j != node->n_len)
 		{
-			ft_printf("%s\n", ((t_node*)node->neighbors[j])->name);
+			ft_printf("%s\n", ((t_node*)node->neighbors->array[j])->name);
 			j++;
 		}
 		ft_printf("END\n\n");
