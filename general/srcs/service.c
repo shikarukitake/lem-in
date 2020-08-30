@@ -26,7 +26,7 @@ static void		free_graph(t_graph **graph)
 	if ((*graph))
 	{
 		if ((*graph)->nodes)
-			free_d_arr(&((*graph)->nodes));
+			free_d_arr(&((*graph)->nodes), 1);
 		free((*graph));
 		(*graph) = NULL;
 	}

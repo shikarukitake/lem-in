@@ -76,9 +76,9 @@ void		create_link(t_lem *lem)
 
 	if (in_neighbors(f->neighbors, f->n_len, s) == 0)
 	{
-		if (!add_darr(&f->neighbors, s))
+		if (!add_darr(&f->neighbors, s, 1))
 			error_f("create_link add_darr malloc", 0);
-		if (!add_darr(&s->neighbors, f))
+		if (!add_darr(&s->neighbors, f, 1))
 			error_f("create_link add_darr malloc", 0);
 		f->n_len++;
 		s->n_len++;
@@ -116,7 +116,7 @@ void		parse_rooms(t_lem *lem)
 		if (lem->temps_d == NULL)
 			error_f("parse rooms ft_strsplit malloc", 0);
 		node = new_node(ft_strdup(lem->temps_d[0]), lem->temps_d[1], lem->temps_d[2]);
-		if (!add_darr(&nodes, node))
+		if (!add_darr(&nodes, node, 0))
 			error_f("parse rooms add_darr malloc", 0);
 		if (lem->next_start)
 		{
