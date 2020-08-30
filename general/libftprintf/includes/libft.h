@@ -69,6 +69,10 @@ typedef struct	s_ulldiv
 	t_ull	rem;
 }				t_ulldiv;
 
+/*
+** Standard libft
+*/
+
 long			ft_atoi_l(const char *str);
 int				ft_atoi(const char *str);
 char			*ft_strncpy(char *dest, const char *src, size_t n);
@@ -130,6 +134,10 @@ void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 void			ft_fuldel(char ***str, size_t len);
 
+/*
+** lists
+*/
+
 typedef struct	s_list
 {
 	void			*content;
@@ -146,13 +154,18 @@ t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_lst_pb(t_list **begin_list,
 				void const *content, size_t content_size);
 long int		ft_lstsize(t_list *begin_list);
+t_list			*ft_lstfind(t_list *lst,
+							  int (*finder)(void *, void *), void *to_find);
+
+/*
+** Some new stuff
+*/
+
 char			*ft_strrev(char *str);
 void			ft_swap(int *x, int *y);
 long long		ft_pow(int number, int pow);
 char			*ft_strjoin_free(char const *s1, char const *s2, int n);
 int				ft_strchrn(const char *s, int c);
-t_list			*ft_lstfind(t_list *lst,
-				int (*finder)(void *, void *), void *to_find);
 int				ft_get_next_line(int fd, char **line);
 char			*ft_strsub_free(char const *s,
 				unsigned int start, size_t len, short free_or_not);

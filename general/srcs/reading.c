@@ -120,12 +120,12 @@ void		parse_rooms(t_lem *lem)
 			error_f("parse rooms add_darr malloc", 0);
 		if (lem->next_start)
 		{
-			lem->graph->start = len;
+			lem->graph->start = nodes->len;
 			lem->next_start = 0;
 		}
 		else if (lem->next_end)
 		{
-			lem->graph->end = len;
+			lem->graph->end = nodes->len;
 			lem->next_end = 0;
 		}
 		lem->graph->len++;

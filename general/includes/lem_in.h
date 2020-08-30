@@ -20,6 +20,7 @@ typedef struct	s_node
 	int				x;
 	int				y;
 	int				n_len;
+	int				in_way;
 }				t_node;
 
 typedef struct	s_grapg

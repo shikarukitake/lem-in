@@ -37,5 +37,6 @@ t_node	*new_node(const char *name, const char *x, const char *y)
 	new->y = ft_atoi(y);
 	new->n_len = 0;
 	new->neighbors = NULL;
+	new->in_way = 0;
 	return (new);
 }
