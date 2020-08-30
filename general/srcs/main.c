@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/30 15:12:00 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/08/30 15:13:17 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int		main(int ac, char **av)
 	t_lem	*lem;
 
 	lem = error_f(NULL, 1);
-	reading(lem);
+	reading(lem);//bogdan
 	//print_graph(lem);
-	solve(lem);
+	solve(lem);//ravil
 	free_lem(lem);
 	return (0);
 }

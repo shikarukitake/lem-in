@@ -32,8 +32,18 @@ static void		free_graph(t_graph **graph)
 	}
 }
 
+void			del_l(void *content, size_t size)
+{
+	t_list	*list;
+
+	list = (t_list*)content;
+	ft_lstdel(&list, NULL);
+}
+
 void			free_lem(t_lem *lem)
 {
+	if (lem->edges)
+		ft_lstdel(&(lem->edges), &del_edge);
 	free_graph(&(lem->graph));
 	free(lem);
 }

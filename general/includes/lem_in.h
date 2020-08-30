@@ -21,15 +21,24 @@ typedef struct	s_node
 	int				y;
 	int				n_len;
 	int				in_way;
+	int				i;
+	struct s_node	*prev;
 }				t_node;
 
 typedef struct	s_grapg
 {
 	int				len;
-	t_dynamicarr	*nodes;
+	t_dynamicarr	*nodes;//array add_darr(&nodes, value)
 	int				start;
 	int				end;
 }				t_graph;
+
+typedef struct	s_edge
+{
+	t_node			*from;
+	t_node			*to;
+	int				w;
+}				t_edge;
 
 typedef struct	s_lem
 {
@@ -39,6 +48,7 @@ typedef struct	s_lem
 	int		n_ants;
 	int		next_start;
 	int		next_end;
+	t_list	*edges;
 }				t_lem;
 
 /*
@@ -84,5 +94,15 @@ void		reading(t_lem *lem);
 */
 
 void		solve(t_lem *lem);
+int			bellman_ford(t_lem *lem);
+
+/*
+** edges
+*/
+
+t_edge	*new_edge(t_node *from, t_node *to);
+int		create_edge(t_lem	*lem);
+void	del_edge(void *edge_addr, size_t size);
+void	print_edges(t_list *elem);
 
 #endif
