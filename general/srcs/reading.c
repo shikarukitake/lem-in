@@ -105,7 +105,7 @@ void		parse_links(t_lem *lem)
 
 void		parse_rooms(t_lem *lem)
 {
-	int				len;
+	int				i;
 	t_node			*node;
 	t_dynamicarr	*nodes;
 
@@ -116,16 +116,17 @@ void		parse_rooms(t_lem *lem)
 		if (lem->temps_d == NULL)
 			error_f("parse rooms ft_strsplit malloc", 0);
 		node = new_node(ft_strdup(lem->temps_d[0]), lem->temps_d[1], lem->temps_d[2]);
-		if (!add_darr(&nodes, node, 0))
+		if (!add_darr(&nodes, node, FT_INT_MAX))
 			error_f("parse rooms add_darr malloc", 0);
+		node->i = nodes->len - 1;
 		if (lem->next_start)
 		{
-			lem->graph->start = nodes->len;
+			lem->graph->start = nodes->len - 1;
 			lem->next_start = 0;
 		}
 		else if (lem->next_end)
 		{
-			lem->graph->end = nodes->len;
+			lem->graph->end = nodes->len - 1;
 			lem->next_end = 0;
 		}
 		lem->graph->len++;
@@ -174,4 +175,5 @@ void		reading(t_lem *lem)
 		i++;
 		free(lem->temps);
 	}
+	lem->graph->nodes->weights[lem->graph->start] = 0;
 }
