@@ -23,6 +23,8 @@ typedef struct	s_node
 	int				in_way;
 	int				i;
 	struct s_node	*prev;
+	struct s_node	*copy;
+	int				s_or_end;
 }				t_node;
 
 typedef struct	s_grapg
@@ -49,6 +51,8 @@ typedef struct	s_lem
 	int		next_start;
 	int		next_end;
 	t_list	*edges;
+	t_list	*path_edges;
+	t_list	*paths;
 }				t_lem;
 
 /*
@@ -104,5 +108,10 @@ t_edge	*new_edge(t_node *from, t_node *to);
 int		create_edge(t_lem	*lem);
 void	del_edge(void *edge_addr, size_t size);
 void	print_edges(t_list *elem);
+
+/*
+** suurbale
+*/
+int		suurbale(t_lem *lem);
 
 #endif

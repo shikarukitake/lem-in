@@ -14,6 +14,9 @@ static t_lem	*init_lem()
 		lem->temps_d = NULL;
 		lem->next_start = 0;
 		lem->next_end = 0;
+		lem->edges = NULL;
+		lem->path_edges = NULL;
+		lem->paths = NULL;
 		return (lem);
 	}
 }

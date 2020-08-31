@@ -122,11 +122,13 @@ void		parse_rooms(t_lem *lem)
 		if (lem->next_start)
 		{
 			lem->graph->start = nodes->len - 1;
+			node->s_or_end = 1;
 			lem->next_start = 0;
 		}
 		else if (lem->next_end)
 		{
 			lem->graph->end = nodes->len - 1;
+			node->s_or_end = 1;
 			lem->next_end = 0;
 		}
 		lem->graph->len++;
