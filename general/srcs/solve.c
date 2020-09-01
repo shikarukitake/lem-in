@@ -289,6 +289,10 @@ void	solve(t_lem *lem)
 	print_paths(lem);
 //	ft_lstiter(lem->edges, &print_edges);
 
-//	bellman_ford(lem);
+	bellman_ford(lem);
+	make_paths(lem, suurbale_used);
+	//TODO DELETE DUBLICATES AND DELETE INTERSECTIONS IN PATHS
+	//TODO FIND PATHS FROM EDGES
+	print_paths(lem);
 //	suurbale(lem);
 }

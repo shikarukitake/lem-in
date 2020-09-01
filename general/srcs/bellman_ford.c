@@ -7,14 +7,14 @@ int		relax_edge(t_edge *edge, t_lem *lem)
 
 //	dist_v = lem->graph->nodes->weights[edge->to->i];
 //	dist_u = lem->graph->nodes->weights[edge->from->i];
-	dist_v = lem->graph->nodes->weights[edge->to->i];
-	dist_u = lem->graph->nodes->weights[edge->from->i];
+	dist_v = edge->to->weight;
+	dist_u = edge->from->weight;
 
 	if (dist_u == FT_INT_MAX)
 		return (FT_FALSE);
 	if (dist_v > dist_u + edge->w)
 	{
-		lem->graph->nodes->weights[edge->to->i] = dist_u + edge->w;
+		edge->to->weight = dist_u + edge->w;
 		edge->to->prev = edge->from;
 		return (FT_TRUE);
 	}
@@ -30,9 +30,9 @@ void	zero_weight(t_lem *lem)
 	while (i != lem->graph->len)
 	{
 		if (i == lem->graph->start)
-			lem->graph->nodes->weights[i] = 0;
+			lem->graph->nodes->array[i]->weight = 0;
 		else
-			lem->graph->nodes->weights[i] = FT_INT_MAX;
+			lem->graph->nodes->array[i]->weight = FT_INT_MAX;
 		i++;
 	}
 }
