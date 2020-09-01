@@ -204,12 +204,12 @@ void	create_copy(t_lem *lem, t_edge *edge_dub)
 	edge_dub->to->copy = copy;
 }
 
-void	add_relation(t_lem *lem, t_edge *edge_dub)
+void	one_relation(t_node *from, t_node *to, t_lem *lem)
 {
 	t_list	*new;
 	t_edge	*edge;
 
-	edge = new_edge(edge_dub->from->copy, edge_dub->from);
+	edge = new_edge(from, to);
 	if (!edge)
 		error_f("add_relation new_edge malloc", 0);
 	edge->w = 0;
@@ -217,15 +217,12 @@ void	add_relation(t_lem *lem, t_edge *edge_dub)
 	if (!new)
 		error_f("add_relation ft_lstnew malloc", 0);
 	ft_lstadd(&(lem->edges), new);
+}
 
-	edge = new_edge(edge_dub->to->copy, edge_dub->to);
-	if (!edge)
-		error_f("add_relation new_edge malloc", 0);
-	edge->w = 0;
-	new = ft_lstnew(edge, sizeof(t_edge));
-	if (!new)
-		error_f("add_relation ft_lstnew malloc", 0);
-	ft_lstadd(&(lem->edges), new);
+void	add_relation(t_lem *lem, t_edge *edge_dub)
+{
+	one_relation(edge_dub->from->copy, edge_dub->from, lem);
+	one_relation(edge_dub->to->copy, edge_dub->to, lem);
 }
 
 void	dublicate_node(t_lem *lem, t_edge *edge_dub)
