@@ -10,9 +10,12 @@ void	free_nodes(t_node **arr, int free_neight)
 		free(arr[i]->name);
 		if (free_neight)
 		{
-			free(arr[i]->neighbors->array);
-			free(arr[i]->neighbors->weights);
-			free(arr[i]->neighbors);
+			if (arr[i]->neighbors)
+			{
+				free(arr[i]->neighbors->array);
+				free(arr[i]->neighbors->weights);
+				free(arr[i]->neighbors);
+			}
 		}
 		free(arr[i]);
 		i++;

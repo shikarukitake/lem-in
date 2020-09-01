@@ -6,7 +6,8 @@ void	print_edges(t_list *elem)
 
 	edge = (t_edge*)elem->content;
 	ft_printf("EDGE:\n");
-	ft_printf("FROM: %s | TO: %s \n\n", edge->from->name, edge->to->name);
+	ft_printf("FROM: %s | TO: %s\n", edge->from->name, edge->to->name);
+	ft_printf("W=%d\n\n", edge->w);
 }
 
 void	del_edge(void *edge_addr, size_t size)
