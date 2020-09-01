@@ -186,21 +186,92 @@ void	make_paths(t_lem *lem, int suurbale)
 		many_paths(lem);
 }
 
-void	dublicate_nodes(lem)
+void	create_copy(t_lem *lem, t_edge *edge_dub)
+{
+	t_node	*copy;
+	t_node	*current;
+
+	current = edge_dub->from;
+	copy = new_node(ft_strjoin(current->name, "_copy"), "0", "0");
+	if (!copy)
+		error_f("create_copy new_node malloc", 0);
+	edge_dub->from->copy = copy;
+
+	current = edge_dub->to;
+	copy = new_node(ft_strjoin(current->name, "_copy"), "0", "0");
+	if (!copy)
+		error_f("create_copy new_node malloc", 0);
+	edge_dub->to->copy = copy;
+}
+
+void	add_relation(t_lem *lem, t_edge *edge_dub)
+{
+	t_list	*new;
+	t_edge	*edge;
+
+	edge = new_edge(edge_dub->from->copy, edge_dub->from);
+	if (!edge)
+		error_f("add_relation new_edge malloc", 0);
+	edge->w = 0;
+	new = ft_lstnew(edge, sizeof(t_edge));
+	if (!new)
+		error_f("add_relation ft_lstnew malloc", 0);
+	ft_lstadd(&(lem->edges), new);
+
+	edge = new_edge(edge_dub->to->copy, edge_dub->to);
+	if (!edge)
+		error_f("add_relation new_edge malloc", 0);
+	edge->w = 0;
+	new = ft_lstnew(edge, sizeof(t_edge));
+	if (!new)
+		error_f("add_relation ft_lstnew malloc", 0);
+	ft_lstadd(&(lem->edges), new);
+}
+
+void	dublicate_node(t_lem *lem, t_edge *edge_dub)
+{
+	t_list	*edges;
+	t_edge	*edge;
+
+	edges = lem->edges;
+	create_copy(lem, edge_dub);
+	while (edges)
+	{
+		edge = edges->content;
+		if (edge->from == edge_dub->from && edge->w != -1)
+			edge->from = edge_dub->from->copy;
+		else if (edge->from == edge_dub->to && edge->to == edge_dub->from)
+			edge->to = edge->to->copy;
+		else if (edge->from == edge_dub->to && edge->w != -1)
+			edge->from = edge_dub->to->copy;
+		else if (edge->to == edge_dub->to && edge->w == -1)
+			edge->to = edge_dub->to->copy;
+		edges = edges->next;
+	}
+	add_relation(lem, edge_dub);
+}
+
+void	dublicate_nodes(t_lem *lem)
 {
 	t_list	*paths;
 	t_list	*path;
 
+	paths = lem->paths;
 	while (paths)
 	{
 		path = ((t_list*)(paths->content))->next;
 		while (path->next)
 		{
-
+			dublicate_node(lem, path->content);
 			path = path->next;
 		}
 		paths = paths->next;
 	}
+}
+
+void	make_new_paths(lem)
+{
+
 }
 
 void	solve(t_lem *lem)
@@ -213,9 +284,11 @@ void	solve(t_lem *lem)
 	if (!(lem->graph->nodes->array[lem->graph->end]->prev))
 		error_f("There is no path", 0);
 	make_paths(lem, suurbale_used);
-//	dublicate_nodes(lem);
+	dublicate_nodes(lem);
 	count_steps(lem);
 	print_paths(lem);
-	ft_lstiter(lem->edges, &print_edges);
-	suurbale(lem);
+//	ft_lstiter(lem->edges, &print_edges);
+
+//	bellman_ford(lem);
+//	suurbale(lem);
 }

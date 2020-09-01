@@ -177,5 +177,6 @@ void		reading(t_lem *lem)
 		i++;
 		free(lem->temps);
 	}
-	lem->graph->nodes->weights[lem->graph->start] = 0;
+	lem->graph->nodes->weights[lem->graph->start] = 0;//TODO DELETE
+	(lem->graph->nodes->array[lem->graph->start])->weight = 0;
 }

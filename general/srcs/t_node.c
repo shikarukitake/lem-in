@@ -43,5 +43,6 @@ t_node	*new_node(const char *name, const char *x, const char *y)
 	new->in_way = 0;
 	new->s_or_end = 0;
 	new->prev = NULL;
+	new->weight = FT_INT_MAX;
 	return (new);
 }

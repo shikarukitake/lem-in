@@ -22,6 +22,7 @@ typedef struct	s_node
 	int				n_len;
 	int				in_way;
 	int				i;
+	int				weight;
 	struct s_node	*prev;
 	struct s_node	*copy;
 	int				s_or_end;

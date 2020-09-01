@@ -6,11 +6,12 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/31 15:24:11 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/01 21:11:49 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+t_lem	*lem;
 
 void	print_graph(t_lem *lem)
 {
@@ -37,8 +38,6 @@ void	print_graph(t_lem *lem)
 
 int		main(void)
 {
-	t_lem	*lem;
-
 	lem = error_f(NULL, 1);
 	reading(lem);//bogdan
 	//print_graph(lem);
