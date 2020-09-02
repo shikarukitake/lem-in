@@ -26,58 +26,6 @@ void	count_steps(t_lem *lem)
 
 }
 
-int		get_running(const t_node *from, const t_node *to, t_list *edges, t_list *swap)
-{
-	if (edges->next)
-	{
-		if (((t_edge*)(edges->next->content))->from == to &&
-		((t_edge*)(edges->next->content))->to == from)
-		{
-			swap = edges->next;
-			edges->next = edges->next->next;
-			free(swap);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-// TODO REFACTOR TO SMALLER
-//t_edge	*get_edge(t_node *from, t_node *to, t_lem *lem)
-//{
-//	t_edge	*edge;
-//	t_list	*edges;
-//	t_edge	*finded;
-//	t_list	*swap;
-//	int		running;
-//
-//	edges = lem->edges;
-//	edge = edges->content;
-//	finded = NULL;
-//	running = 0;
-//	if (edge->from == to && edge->to == from)
-//	{
-//		lem->edges = edges->next;
-//		free(edges);
-//		edges = edges->next;
-//		running++;
-//	}
-//	while (edges)
-//	{
-//		if (running == 2)
-//			break;
-//		edge = edges->content;
-//		if (edge->from == from && edge->to == to)
-//		{
-//			finded = edge;
-//			running++;
-//		}
-//		running += get_running(from, to, edges, swap);
-//		edges = edges->next;
-//	}
-//	return (finded);
-//}
-
 t_edge	*get_first_edge(t_node *from, t_node *to, t_lem *lem, int *running)
 {
 	t_edge	*edge;
@@ -151,22 +99,6 @@ t_edge	*get_edge(t_node *from, t_node *to, t_lem *lem)
 	}
 	return (finded);
 }
-
-//t_edge	*one_path_edge(t_node *node, t_lem *lem)
-//{
-//	t_edge	*edge;
-//
-//	edge = NULL;
-//	if (node->is_copy == 0 && node->prev->is_copy == 0)
-//		edge = get_edge(node->prev, node, lem);
-//	else if (node->is_copy == 0 && node->prev->is_copy == 1)
-//		edge = get_edge(node->prev->copy, node, lem);
-//	else if (node->is_copy == 1 && node->prev->is_copy == 0)
-//		edge = get_edge(node->prev, node->copy, lem);
-//	else if (node->is_copy == 1 && node->prev->is_copy == 1)
-//		edge = get_edge(node->prev->copy, node->copy, lem);
-//	return (edge);
-//}
 
 void	one_path(t_lem *lem)
 {
@@ -288,15 +220,83 @@ void	dublicate_nodes(t_lem *lem)
 	}
 }
 
+t_list	*find_and_delete_first(t_lem *lem)
+{
+	t_list	*old_paths;
+	t_list	*temp;
+	t_edge	*edge;
+	t_list	*temp_list;
+
+	old_paths = lem->new_paths;
+	edge = old_paths->content;
+	temp = NULL;
+	if (edge->from->s_or_end)
+	{
+		lem->new_paths = old_paths->next;
+		ft_lstadd(&(temp), old_paths);
+		ft_lst_pb(&(lem->paths), temp, sizeof(t_list));
+		return (temp);
+	}
+	while (old_paths->next)
+	{
+		edge = old_paths->next->content;
+		if (edge->from->s_or_end)
+		{
+			temp_list = old_paths->next->next;
+			ft_lstadd(&(temp), old_paths->next);
+			ft_lst_pb(&(lem->paths), temp, sizeof(t_list));
+			old_paths->next = temp_list;
+			return (temp);
+		}
+		old_paths = old_paths->next;
+	}
+	return (NULL);
+}
+
 void	make_new_paths(t_lem *lem)
 {
-	t_list	*paths;
+	t_list	*old_paths;
+	t_list	*path;
+	t_edge	*edge;
+	t_edge	*temp_edge;
+	t_list	*prev;
 
-	paths = lem->paths;
-	while (paths)
+	while (lem->new_paths)
 	{
-		ft_lstiter(paths->content, );
-		paths = paths->next;
+		path = find_and_delete_first(lem);
+		if (!path)
+			return;
+		edge = path->content;
+		old_paths = lem->new_paths;
+		prev = NULL;
+		while (old_paths)
+		{
+			temp_edge = old_paths->content;
+			if (temp_edge->from == edge->to)//TODO FREE
+			{
+				ft_lst_pb(&path, temp_edge, sizeof(t_edge));
+				if (prev)
+				{
+					prev->next = old_paths->next;
+					old_paths = old_paths->next;
+				}
+				else
+				{
+					old_paths = old_paths->next;
+					lem->new_paths = old_paths;
+				}
+				edge = temp_edge;
+				if (edge->to == lem->graph->nodes->array[lem->graph->end])
+					break;
+			}
+			else
+			{
+				prev = old_paths;
+				old_paths = old_paths->next;
+			}
+			if (!old_paths)
+				old_paths = lem->new_paths;
+		}
 	}
 }
 
@@ -343,6 +343,7 @@ void	delete_dublicates(t_lem *lem)
 		paths = paths->next;
 	}
 	ft_lstdel(&(lem->edges), &del_edges);
+	lem->edges = NULL;
 }
 
 void	delete_disjoint(t_list	*list)
@@ -368,7 +369,6 @@ void	delete_disjoint(t_list	*list)
 void	delete_disjoint_edges(t_lem *lem)
 {
 	t_list	*paths;
-	t_list	*path;
 
 	paths = lem->paths;
 	while (paths)
@@ -378,10 +378,39 @@ void	delete_disjoint_edges(t_lem *lem)
 	}
 }
 
+void	all_edges_in_paths_connected(t_lem *lem)
+{
+	t_list	*paths;
+	t_list	*path;
+	t_list	*temp;
+
+	paths = lem->paths;
+	while (paths)
+	{
+		path = paths->content;
+		if (lem->new_paths == FT_NULL)
+			lem->new_paths = path;
+		else
+		{
+			temp = path;
+			while (path->next)
+			{
+				path = path->next;
+			}
+			path->next = lem->new_paths;
+			lem->new_paths = temp;
+		}
+		paths = paths->next;
+	}
+	ft_lstdel(&(lem->paths), NULL);
+	lem->paths = NULL;
+}
+
 void	solve(t_lem *lem)
 {
 	int	suurbale_used;
 
+	// FIRST
 	suurbale_used = 0;
 	create_edge(lem);
 	bellman_ford(lem);
@@ -399,11 +428,20 @@ void	solve(t_lem *lem)
 	//TODO FIND PATHS FROM EDGES
 	delete_dublicates(lem);
 
-	create_edge(lem);
+//	create_edge(lem);
+	ft_printf("\nfinded paths:\n");
 	print_paths(lem);
 	delete_disjoint_edges(lem);
-	make_new_paths(lem);
+	ft_printf("\ndeleted disjoint edges paths:\n");
 	print_paths(lem);
+	all_edges_in_paths_connected(lem);
+	ft_printf("\nall path's edges:\n");
+	ft_lstiter(lem->new_paths, &print_path);
+
+	make_new_paths(lem);
+	ft_printf("\n\nall new paths:\n");
+	if (lem->paths)
+		print_paths(lem);
 //	ft_lstiter(lem->edges, &print_edges);
 //	suurbale(lem);
 }
