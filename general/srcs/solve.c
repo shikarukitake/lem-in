@@ -17,8 +17,8 @@ void	print_paths(t_lem *lem)
 	{
 		ft_lstiter(swap->content, &print_path);
 		swap = swap->next;
+		ft_printf("\n");
 	}
-	ft_printf("\n");
 }
 
 void	count_steps(t_lem *lem)
@@ -152,6 +152,22 @@ t_edge	*get_edge(t_node *from, t_node *to, t_lem *lem)
 	return (finded);
 }
 
+//t_edge	*one_path_edge(t_node *node, t_lem *lem)
+//{
+//	t_edge	*edge;
+//
+//	edge = NULL;
+//	if (node->is_copy == 0 && node->prev->is_copy == 0)
+//		edge = get_edge(node->prev, node, lem);
+//	else if (node->is_copy == 0 && node->prev->is_copy == 1)
+//		edge = get_edge(node->prev->copy, node, lem);
+//	else if (node->is_copy == 1 && node->prev->is_copy == 0)
+//		edge = get_edge(node->prev, node->copy, lem);
+//	else if (node->is_copy == 1 && node->prev->is_copy == 1)
+//		edge = get_edge(node->prev->copy, node->copy, lem);
+//	return (edge);
+//}
+
 void	one_path(t_lem *lem)
 {
 	t_list	*path;
@@ -163,6 +179,8 @@ void	one_path(t_lem *lem)
 	while (node->prev)
 	{
 		edge = get_edge(node->prev, node, lem);
+		node->prev->in_way++;
+		node->in_way++;
 		if (edge)
 			ft_lst_pb(&path, edge, sizeof(t_edge));//TODO protect
 		node = node->prev;
@@ -195,12 +213,16 @@ void	create_copy(t_lem *lem, t_edge *edge_dub)
 	copy = new_node(ft_strjoin(current->name, "_copy"), "0", "0");
 	if (!copy)
 		error_f("create_copy new_node malloc", 0);
+	copy->is_copy = 1;
+	copy->copy = edge_dub->from;
 	edge_dub->from->copy = copy;
 
 	current = edge_dub->to;
 	copy = new_node(ft_strjoin(current->name, "_copy"), "0", "0");
 	if (!copy)
 		error_f("create_copy new_node malloc", 0);
+	copy->is_copy = 1;
+	copy->copy = edge_dub->to;
 	edge_dub->to->copy = copy;
 }
 
@@ -266,9 +288,94 @@ void	dublicate_nodes(t_lem *lem)
 	}
 }
 
-void	make_new_paths(lem)
+void	make_new_paths(t_lem *lem)
 {
+	t_list	*paths;
 
+	paths = lem->paths;
+	while (paths)
+	{
+		ft_lstiter(paths->content, );
+		paths = paths->next;
+	}
+}
+
+void	change_path_dublicates(t_list *list)
+{
+	t_edge	*edge;
+
+	edge = list->content;
+	if (edge->from->is_copy == 0 && edge->to->is_copy == 1)
+	{
+		edge->to = edge->to->copy;
+		edge->to->in_way++;
+	}
+	else if (edge->from->is_copy == 1 && edge->to->is_copy == 0)
+	{
+		edge->from = edge->from->copy;
+		edge->from->in_way++;
+	}
+	else if (edge->from->is_copy == 1 && edge->to->is_copy == 1)
+	{
+		edge->to = edge->to->copy;
+		edge->from = edge->from->copy;
+		edge->to->in_way++;
+		edge->from->in_way++;
+	}
+}
+
+void	del_edges(void *content, size_t size)//TODO SAME FUNCTION DEL_EDGE
+{
+	t_edge	*edge;
+
+	edge = content;
+	free(edge);
+}
+
+void	delete_dublicates(t_lem *lem)
+{
+	t_list	*paths;
+
+	paths = lem->paths;
+	while (paths)
+	{
+		ft_lstiter(paths->content, &change_path_dublicates);
+		paths = paths->next;
+	}
+	ft_lstdel(&(lem->edges), &del_edges);
+}
+
+void	delete_disjoint(t_list	*list)
+{
+	t_edge	*edge;
+	t_list	*temp;
+
+	if (list->next)
+	{
+		edge = list->next->content;
+		if (edge->from->in_way > 2 && edge->to->in_way > 2)
+		{
+			if (edge->from->s_or_end || edge->to->s_or_end)
+				return ;
+			free(edge);
+			temp = list->next;
+			list->next = list->next->next;
+			free(temp);
+		}
+	}
+}
+
+void	delete_disjoint_edges(t_lem *lem)
+{
+	t_list	*paths;
+	t_list	*path;
+
+	paths = lem->paths;
+	while (paths)
+	{
+		ft_lstiter(paths->content, &delete_disjoint);
+		paths = paths->next;
+	}
 }
 
 void	solve(t_lem *lem)
@@ -290,6 +397,13 @@ void	solve(t_lem *lem)
 	make_paths(lem, suurbale_used);
 	//TODO DELETE DUBLICATES AND DELETE INTERSECTIONS IN PATHS
 	//TODO FIND PATHS FROM EDGES
+	delete_dublicates(lem);
+
+	create_edge(lem);
 	print_paths(lem);
+	delete_disjoint_edges(lem);
+	make_new_paths(lem);
+	print_paths(lem);
+//	ft_lstiter(lem->edges, &print_edges);
 //	suurbale(lem);
 }

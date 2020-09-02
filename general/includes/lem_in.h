@@ -26,6 +26,7 @@ typedef struct	s_node
 	struct s_node	*prev;
 	struct s_node	*copy;
 	int				s_or_end;
+	int				is_copy;
 }				t_node;
 
 typedef struct	s_grapg
@@ -52,7 +53,7 @@ typedef struct	s_lem
 	int		next_start;
 	int		next_end;
 	t_list	*edges;
-	t_list	*path_edges;
+	t_list	*new_paths;
 	t_list	*paths;
 }				t_lem;
 

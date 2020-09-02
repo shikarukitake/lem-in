@@ -44,5 +44,6 @@ t_node	*new_node(const char *name, const char *x, const char *y)
 	new->s_or_end = 0;
 	new->prev = NULL;
 	new->weight = FT_INT_MAX;
+	new->is_copy = 0;
 	return (new);
 }
