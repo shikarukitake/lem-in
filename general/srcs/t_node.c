@@ -10,9 +10,12 @@ void	free_nodes(t_node **arr, int free_neight)
 		free(arr[i]->name);
 		if (free_neight)
 		{
-			free(arr[i]->neighbors->array);
-			free(arr[i]->neighbors->weights);
-			free(arr[i]->neighbors);
+			if (arr[i]->neighbors)
+			{
+				free(arr[i]->neighbors->array);
+				free(arr[i]->neighbors->weights);
+				free(arr[i]->neighbors);
+			}
 		}
 		free(arr[i]);
 		i++;
@@ -38,6 +41,9 @@ t_node	*new_node(const char *name, const char *x, const char *y)
 	new->n_len = 0;
 	new->neighbors = NULL;
 	new->in_way = 0;
+	new->s_or_end = 0;
 	new->prev = NULL;
+	new->weight = FT_INT_MAX;
+	new->is_copy = 0;
 	return (new);
 }

@@ -6,11 +6,12 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/30 20:36:32 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/01 23:07:33 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+t_lem	*lem;
 
 void	print_graph(t_lem *lem)
 {
@@ -35,10 +36,8 @@ void	print_graph(t_lem *lem)
 	}
 }
 
-int		main()
+int		main(void)
 {
-	t_lem	*lem;
-
 	lem = error_f(NULL, 1);
 	reading(lem);//bogdan
 	//print_graph(lem);
@@ -46,3 +45,41 @@ int		main()
 	free_lem(lem);
 	return (0);
 }
+
+//void	del_nodes(void *elem, size_t size)
+//{
+//	t_node *node;
+//
+//	node = (t_node*)elem;
+//	free(node->name);
+//	free(elem);
+//}
+//
+//void	del_included(void	*list, size_t size)
+//{
+//	ft_lstdel(&list, NULL);
+//}
+//
+//int		main(void)
+//{
+//	t_list *general = NULL;
+//	t_list *included = NULL;
+//	t_node	*some;
+//	int value;
+//
+//	for (int j = 0; j < 10; j++)
+//	{
+//		ft_printf("j=%d \n", j);
+//		included = NULL;
+//		for (int i = 0; i < 10; i++)
+//		{
+//			some = new_node(ft_itoa(i), "0", "0");
+//			ft_lst_pb(&included, some, sizeof(t_node));
+//			ft_printf("i=%d \n", i);
+//		}
+//		ft_lst_pb(&general, included, sizeof(t_list));
+//
+//	}
+//	ft_lstdel(&general, &del_included);
+//	return (0);
+//}
