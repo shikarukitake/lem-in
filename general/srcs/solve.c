@@ -272,82 +272,175 @@ void	dublicate_nodes(t_lem *lem)
 	}
 }
 
-t_list	*find_and_delete_first(t_lem *lem)
-{
-	t_list	*old_paths;
-	t_list	*temp;
-	t_edge	*edge;
-	t_list	*temp_list;
+//t_list	*find_and_delete_first(t_lem *lem)
+//{
+//	t_list	*old_paths;
+//	t_list	*temp;
+//	t_edge	*edge;
+//	t_list	*temp_list;
+//
+//	old_paths = lem->new_paths;
+//	edge = old_paths->content;
+//	temp = NULL;
+//	if (edge->from->s_or_end)
+//	{
+//		lem->new_paths = old_paths->next;
+//		ft_lstadd(&(temp), old_paths);
+//		ft_lst_pb(&(lem->paths), temp, sizeof(t_list));
+//		return (temp);
+//	}
+//	while (old_paths->next)
+//	{
+//		edge = old_paths->next->content;
+//		if (edge->from->s_or_end)
+//		{
+//			temp_list = old_paths->next->next;
+//			ft_lstadd(&(temp), old_paths->next);
+//			ft_lst_pb(&(lem->paths), temp, sizeof(t_list));
+//			old_paths->next = temp_list;
+//			return (temp);
+//		}
+//		old_paths = old_paths->next;
+//	}
+//	return (NULL);
+//}
+//
+//void	make_new_paths(t_lem *lem)
+//{
+//	t_list	*old_paths;
+//	t_list	*path;
+//	t_edge	*edge;
+//	t_edge	*temp_edge;
+//	t_list	*prev;
+//
+//	while (lem->new_paths)
+//	{
+//		path = find_and_delete_first(lem);
+//		if (!path)
+//			return;
+//		edge = path->content;
+//		old_paths = lem->new_paths;
+//		prev = NULL;
+//		ft_printf("\n\nEDGE: %s-%s", edge->from->name, edge->to->name);
+//		ft_printf("\nall path's edges:\n");
+//		ft_lstiter(lem->new_paths, &print_path);
+//		ft_printf("\n\n");
+//		while (old_paths)
+//		{
+//			temp_edge = old_paths->content;
+//			if (temp_edge->from == edge->to)//TODO FREE
+//			{
+//				ft_lst_pb(&path, temp_edge, sizeof(t_edge));
+//				if (prev)
+//				{
+//					prev->next = old_paths->next;
+//					old_paths = old_paths->next;
+//				}
+//				else
+//				{
+//					old_paths = old_paths->next;
+//					lem->new_paths = old_paths;
+//				}
+//				edge = temp_edge;
+//				if (edge->to == lem->graph->nodes->array[lem->graph->end])
+//				{
+//					break;
+//				}
+//				ft_printf("\n\nEDGE: %s-%s", temp_edge->from->name, temp_edge->to->name);
+//				ft_printf("\nall path's edges:\n");
+//				ft_lstiter(lem->new_paths, &print_path);
+//				ft_printf("\n\n");
+//			}
+//			else
+//			{
+//				prev = old_paths;
+//				old_paths = old_paths->next;
+//			}
+//			if (!old_paths)
+//				old_paths = lem->new_paths;
+//		}
+//	}
+//}
 
-	old_paths = lem->new_paths;
-	edge = old_paths->content;
-	temp = NULL;
-	if (edge->from->s_or_end)
+int		equal_edges(t_edge *a, t_edge *b)
+{
+	if (a->from == b->from &&
+		a->to == b->to)
+		return (1);
+	else
+		return (0);
+}
+
+int		path_edges(t_edge *a, t_edge *b)
+{
+	if (b->to == a->from)
+		return (1);
+	else
+		return (0);
+}
+
+int		start_edges(t_edge *a, t_edge *b)
+{
+	if (a->from->s_or_end)
+		return (1);
+	return (0);
+}
+
+t_edge	*delete_node(t_list	**paths, t_edge *edge, int (*f)(t_edge*, t_edge*))
+{
+	t_edge	*finded;
+	t_list	*temp;
+	t_list	*prev;
+
+	temp = *paths;
+	prev = *paths;
+	finded = NULL;
+	if (temp != NULL)
 	{
-		lem->new_paths = old_paths->next;
-		ft_lstadd(&(temp), old_paths);
-		ft_lst_pb(&(lem->paths), temp, sizeof(t_list));
-		return (temp);
-	}
-	while (old_paths->next)
-	{
-		edge = old_paths->next->content;
-		if (edge->from->s_or_end)
+		finded = temp->content;
+		if (f(finded, edge))
 		{
-			temp_list = old_paths->next->next;
-			ft_lstadd(&(temp), old_paths->next);
-			ft_lst_pb(&(lem->paths), temp, sizeof(t_list));
-			old_paths->next = temp_list;
-			return (temp);
+			*paths = temp->next;
+			free(temp);
+			return (finded);
 		}
-		old_paths = old_paths->next;
+		while (temp)
+		{
+			finded = temp->content;
+
+			if (f(finded, edge))
+				break;
+			prev = temp;
+			temp = temp->next;
+		}
+		if (temp == NULL)
+			return (NULL);
+		prev->next = temp->next;
+		free(temp);
+		return (finded);
 	}
 	return (NULL);
 }
 
 void	make_new_paths(t_lem *lem)
 {
-	t_list	*old_paths;
-	t_list	*path;
+	t_list	*new_paths;
 	t_edge	*edge;
-	t_edge	*temp_edge;
-	t_list	*prev;
+	t_list	*path;
 
+
+	lem->paths = NULL;
 	while (lem->new_paths)
 	{
-		path = find_and_delete_first(lem);
-		if (!path)
-			return;
-		edge = path->content;
-		old_paths = lem->new_paths;
-		prev = NULL;
-		while (old_paths)
+		path = NULL;
+		edge = delete_node(&(lem->new_paths), NULL, &start_edges);
+		ft_lst_pb(&path, edge, sizeof(t_edge));
+		ft_lst_pb(&(lem->paths), path, sizeof(t_list));
+
+		while (edge->to != lem->graph->nodes->array[lem->graph->end])
 		{
-			temp_edge = old_paths->content;
-			if (temp_edge->from == edge->to)//TODO FREE
-			{
-				ft_lst_pb(&path, temp_edge, sizeof(t_edge));
-				if (prev)
-				{
-					prev->next = old_paths->next;
-					old_paths = old_paths->next;
-				}
-				else
-				{
-					old_paths = old_paths->next;
-					lem->new_paths = old_paths;
-				}
-				edge = temp_edge;
-				if (edge->to == lem->graph->nodes->array[lem->graph->end])
-					break;
-			}
-			else
-			{
-				prev = old_paths;
-				old_paths = old_paths->next;
-			}
-			if (!old_paths)
-				old_paths = lem->new_paths;
+			edge = delete_node(&(lem->new_paths), edge, &path_edges);
+			ft_lst_pb(&path, edge, sizeof(t_edge));
 		}
 	}
 }
@@ -509,13 +602,18 @@ void	copy_paths(t_lem *lem)
 			path = path->next;
 			i++;
 		}
+		paths = paths->next;
+
 		temp->path = new_path;
 		temp->len = i;
 		temp->on = 1;
-		temp->next = new_way();
-		temp = temp->next;
-		paths = paths->next;
+		if (paths)
+		{
+			temp->next = new_way();
+			temp = temp->next;
+		}
 	}
+	temp->next = NULL;
 }
 
 void	make_solution_from_first(t_lem *lem)
@@ -545,6 +643,7 @@ void	reverse_list(t_list **head_ref)
 
 void	first_solve(t_lem *lem)
 {
+	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
 	create_edge(lem);
 	bellman_ford(lem);
 	if (!(lem->graph->nodes->array[lem->graph->end]->prev))
@@ -608,9 +707,25 @@ void	make_solutuins_from_second(t_lem *lem)
 	copy_paths(lem);
 }
 
+void	refresh_nodes(t_lem *lem)
+{
+	int i;
+
+	i = 0;
+	while (i != lem->graph->len)
+	{
+		if (lem->graph->nodes->array[i]->copy)
+		{
+			free(lem->graph->nodes->array[i]->copy);//todo maybe need free
+			lem->graph->nodes->array[i]->copy = NULL;
+		}
+		i++;
+	}
+}
 
 int		second_solve(t_lem *lem)
 {
+	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
 	bellman_ford(lem);
 	if (!(lem->graph->nodes->array[lem->graph->end]->prev))
 		return (1);
@@ -624,9 +739,11 @@ int		second_solve(t_lem *lem)
 	all_edges_in_paths_connected(lem);
 	ft_printf("\nall path's edges:\n");
 	ft_lstiter(lem->new_paths, &print_path);
+	ft_printf("\n\n");
 	make_new_paths(lem);
 	create_edge(lem);
 	refresh_edges(lem);
+	refresh_nodes(lem);
 	ft_printf("\n\nall new paths:\n");
 	if (lem->paths)
 		print_paths(lem);
@@ -667,6 +784,6 @@ void	solve(t_lem *lem)
 	while (check_solutions(lem))
 		if (second_solve(lem))
 			break;
+	run_ants(lem);
 }
-//todo COUNT_STEPS
 //todo ANTS RUNNING

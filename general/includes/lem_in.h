@@ -22,6 +22,7 @@ typedef struct	s_node
 	int				n_len;
 	int				in_way;
 	int				i;
+	int				ant;
 	int				weight;
 	struct s_node	*prev;
 	struct s_node	*copy;
@@ -74,6 +75,7 @@ typedef struct	s_lem
 	t_list	*new_paths;
 	t_list	*paths;
 	t_var	*var;
+	int		i;
 }				t_lem;
 
 /*
@@ -131,8 +133,9 @@ void	del_edge(void *edge_addr, size_t size);
 void	print_edges(t_list *elem);
 
 /*
-** suurbale
+** run ants
 */
-int		suurbale(t_lem *lem);
+
+void	run_ants(t_lem *lem);
 
 #endif

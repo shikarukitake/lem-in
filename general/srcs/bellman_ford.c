@@ -32,7 +32,11 @@ void	zero_weight(t_lem *lem)
 		if (i == lem->graph->start)
 			lem->graph->nodes->array[i]->weight = 0;
 		else
+		{
 			lem->graph->nodes->array[i]->weight = FT_INT_MAX;
+			if (lem->graph->nodes->array[i]->copy)
+				lem->graph->nodes->array[i]->copy->weight = FT_INT_MAX;
+		}
 		i++;
 	}
 }
