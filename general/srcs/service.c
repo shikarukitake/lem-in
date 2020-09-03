@@ -17,6 +17,7 @@ static t_lem	*init_lem()
 		lem->edges = NULL;
 		lem->new_paths = NULL;
 		lem->paths = NULL;
+		lem->var = NULL;
 		return (lem);
 	}
 }

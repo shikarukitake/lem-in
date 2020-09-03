@@ -156,6 +156,9 @@ void			ft_lst_pb(t_list **begin_list,
 long int		ft_lstsize(t_list *begin_list);
 t_list			*ft_lstfind(t_list *lst,
 							  int (*finder)(void *, void *), void *to_find);
+t_list			*ft_lstnew_copy(void const *content, size_t content_size);
+void			ft_lst_pb_copy(t_list **begin_list,
+					   void const *content, size_t content_size);
 
 /*
 ** Some new stuff

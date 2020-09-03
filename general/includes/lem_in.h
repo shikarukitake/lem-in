@@ -44,6 +44,24 @@ typedef struct	s_edge
 	int				w;
 }				t_edge;
 
+typedef struct		s_way
+{
+	int				len;
+	int				ants;
+	int				on;
+	struct s_way	*next;
+	t_list 			*path;
+}					t_way;
+
+typedef struct	s_var
+{
+
+	int				n_ways;
+	int				steps;
+	struct s_var	*next;
+	t_way			*ways;
+}				t_var;
+
 typedef struct	s_lem
 {
 	t_graph	*graph;
@@ -55,6 +73,7 @@ typedef struct	s_lem
 	t_list	*edges;
 	t_list	*new_paths;
 	t_list	*paths;
+	t_var	*var;
 }				t_lem;
 
 /*
