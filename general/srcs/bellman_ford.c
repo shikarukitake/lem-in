@@ -45,6 +45,7 @@ int		bellman_ford(t_lem *lem)
 {
 	int		i;
 	int		r;
+	int		r_temp;
 	t_list	*edges;
 
 	i = 0;
@@ -55,11 +56,14 @@ int		bellman_ford(t_lem *lem)
 		r = FT_FALSE;
 		while (edges)
 		{
-			r = relax_edge(edges->content, lem);
+
+			r_temp = relax_edge(edges->content, lem);
+			if (!r)
+				r = r_temp;
 			edges = edges->next;
 		}
-		if (r == FT_FALSE)
-			break;
+//		if (r == FT_FALSE)
+//			break;
 		i++;
 	}
 	return (FT_TRUE);

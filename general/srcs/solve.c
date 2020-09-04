@@ -580,6 +580,20 @@ t_way	*new_way(void)
 	return (new);
 }
 
+void	insert_node(t_lem *lem, t_list **new_path, t_edge *edge, int end)
+{
+	t_node	*from;
+	t_node	*to;
+
+	from = edge->from;
+	to = edge->to;
+
+	ft_lst_pb_copy(new_path, from, sizeof(t_node));
+	if (end)
+		ft_lst_pb_copy(new_path, to, sizeof(t_node));
+}
+
+
 void	copy_paths(t_lem *lem)
 {
 	t_list	*paths;
@@ -598,12 +612,14 @@ void	copy_paths(t_lem *lem)
 		i = 0;
 		while (path)
 		{
-			ft_lst_pb_copy(&new_path, path->content, path->content_size);
+			if (path->next)
+				insert_node(lem, &new_path, path->content, 0);
+			else
+				insert_node(lem, &new_path, path->content, 1);
 			path = path->next;
 			i++;
 		}
 		paths = paths->next;
-
 		temp->path = new_path;
 		temp->len = i;
 		temp->on = 1;
@@ -653,8 +669,8 @@ void	first_solve(t_lem *lem)
 	reverse_list(&(lem->paths->content));
 	make_solution_from_first(lem);
 	count_steps(lem, lem->var);
-	ft_printf("\nsteps=%d\n\n", lem->var->steps);
-	print_paths(lem);
+//	ft_printf("\nsteps=%d\n\n", lem->var->steps);
+//	print_paths(lem);
 }
 
 void	refresh_edges(t_lem *lem)
@@ -731,26 +747,26 @@ int		second_solve(t_lem *lem)
 		return (1);
 	make_paths(lem, 0);
 	delete_dublicates(lem);
-	ft_printf("\nfinded paths:\n");
-	print_paths(lem);
+//	ft_printf("\nfinded paths:\n");
+//	print_paths(lem);
 	delete_disjoint_edges(lem);
-	ft_printf("\ndeleted disjoint edges paths:\n");
-	print_paths(lem);
+//	ft_printf("\ndeleted disjoint edges paths:\n");
+//	print_paths(lem);
 	all_edges_in_paths_connected(lem);
-	ft_printf("\nall path's edges:\n");
-	ft_lstiter(lem->new_paths, &print_path);
-	ft_printf("\n\n");
+//	ft_printf("\nall path's edges:\n");
+//	ft_lstiter(lem->new_paths, &print_path);
+//	ft_printf("\n\n");
 	make_new_paths(lem);
 	create_edge(lem);
 	refresh_edges(lem);
 	refresh_nodes(lem);
-	ft_printf("\n\nall new paths:\n");
-	if (lem->paths)
-		print_paths(lem);
+//	ft_printf("\n\nall new paths:\n");
+//	if (lem->paths)
+//		print_paths(lem);
 	dublicate_nodes(lem);
 	make_solutuins_from_second(lem);
 	count_steps(lem, lem->var);
-	ft_printf("\nsteps=%d\n\n", lem->var->steps);
+//	ft_printf("\nsteps=%d\n\n", lem->var->steps);
 	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
 //	ft_lstiter(lem->edges, &print_edges);
 //	ft_lstiter(lem->edges, &print_edges);

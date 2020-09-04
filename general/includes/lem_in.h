@@ -78,6 +78,13 @@ typedef struct	s_lem
 	int		i;
 }				t_lem;
 
+
+/*
+** Extended list
+*/
+
+void			reverse_list(t_list **head_ref);
+
 /*
 ** Dynamic Array
 */

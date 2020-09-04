@@ -10,6 +10,7 @@ SR_LI_1 =	main.c \
 			edge.c \
 			solve.c \
 			t_node.c \
+			run_ants.c \
 
 SOURCES_DIR = ./general/srcs/
 

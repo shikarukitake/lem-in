@@ -41,6 +41,7 @@ int		main(void)
 	lem = error_f(NULL, 1);
 	reading(lem);//bogdan
 	//print_graph(lem);
+	ft_printf("\n");
 	solve(lem);//ravil
 	free_lem(lem);
 	return (0);
