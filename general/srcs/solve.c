@@ -386,7 +386,7 @@ int		start_edges(t_edge *a, t_edge *b)
 	return (0);
 }
 
-t_edge	*delete_node(t_list	**paths, t_edge *edge, int (*f)(t_edge*, t_edge*))
+t_edge	*find_edge(t_list	**paths, t_edge *edge, int (*f)(t_edge*, t_edge*))
 {
 	t_edge	*finded;
 	t_list	*temp;
@@ -433,13 +433,12 @@ void	make_new_paths(t_lem *lem)
 	while (lem->new_paths)
 	{
 		path = NULL;
-		edge = delete_node(&(lem->new_paths), NULL, &start_edges);
+		edge = find_edge(&(lem->new_paths), NULL, &start_edges);
 		ft_lst_pb(&path, edge, sizeof(t_edge));
 		ft_lst_pb(&(lem->paths), path, sizeof(t_list));
-
 		while (edge->to != lem->graph->nodes->array[lem->graph->end])
 		{
-			edge = delete_node(&(lem->new_paths), edge, &path_edges);
+			edge = find_edge(&(lem->new_paths), edge, &path_edges);
 			ft_lst_pb(&path, edge, sizeof(t_edge));
 		}
 	}
@@ -477,6 +476,24 @@ void	del_edges(void *content, size_t size)//TODO SAME FUNCTION DEL_EDGE
 	free(edge);
 }
 
+void	delete_copy_nodes(t_lem *lem)
+{
+	t_node	**nodes;
+	int		i;
+
+	i = 0;
+	nodes = lem->graph->nodes->array;
+	while (i != lem->graph->len)
+	{
+		if (nodes[i]->copy)
+		{
+			free_node(&(nodes[i]->copy));
+			nodes[i]->copy = NULL;
+		}
+		i++;
+	}
+}
+
 void	delete_dublicates(t_lem *lem)
 {
 	t_list	*paths;
@@ -488,6 +505,7 @@ void	delete_dublicates(t_lem *lem)
 		paths = paths->next;
 	}
 	ft_lstdel(&(lem->edges), &del_edges);
+
 	lem->edges = NULL;
 }
 
@@ -696,10 +714,9 @@ void	refresh_edges(t_lem *lem)
 	}
 }
 
-void	free_var(t_var	**var)//todo complete free
+void	del_node_l(t_list *list, size_t size)
 {
-	free(*var);
-	*var = NULL;
+	free_node(list->content);
 }
 
 void	make_solutuins_from_second(t_lem *lem)
@@ -712,6 +729,7 @@ void	make_solutuins_from_second(t_lem *lem)
 	if (temp_var->next)
 	{
 		free_var(&(lem->var->next));
+		lem->var->next = NULL;
 		lem->var = new_var(n_ways);
 		lem->var->next = temp_var;
 	}
@@ -757,9 +775,11 @@ int		second_solve(t_lem *lem)
 //	ft_lstiter(lem->new_paths, &print_path);
 //	ft_printf("\n\n");
 	make_new_paths(lem);
+	if (lem->edges)
+		ft_lstdel(&(lem->edges), &del_edge);
 	create_edge(lem);
 	refresh_edges(lem);
-	refresh_nodes(lem);
+	delete_copy_nodes(lem);
 //	ft_printf("\n\nall new paths:\n");
 //	if (lem->paths)
 //		print_paths(lem);
@@ -800,6 +820,7 @@ void	solve(t_lem *lem)
 	while (check_solutions(lem))
 		if (second_solve(lem))
 			break;
+	delete_copy_nodes(lem);
 	run_ants(lem);
 }
 //todo ANTS RUNNING

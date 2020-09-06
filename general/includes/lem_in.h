@@ -109,6 +109,7 @@ void			free_d_arr(t_dynamicarr **arr, int free_neight);
 
 void			free_nodes(t_node **arr, int free_neight);
 t_node			*new_node(const char *name, const char *x, const char *y);
+void			free_node(t_node **node_to_del);
 
 /*
 ** service
@@ -144,5 +145,12 @@ void	print_edges(t_list *elem);
 */
 
 void	run_ants(t_lem *lem);
+
+/*
+** var structure
+*/
+
+void	free_var(t_var	**var);
+void	free_vars(t_var **vars);
 
 #endif

@@ -148,6 +148,7 @@ void		parse(t_lem *lem)
 	{
 		parse_links(lem);
 		ft_printf("%s\n", lem->temps);
+
 	}
 	else
 	{
