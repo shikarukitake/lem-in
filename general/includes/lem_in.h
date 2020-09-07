@@ -153,4 +153,11 @@ void	run_ants(t_lem *lem);
 void	free_var(t_var	**var);
 void	free_vars(t_var **vars);
 
+/*
+** debug
+*/
+
+t_edge	*find_edge_without_delete(t_lem *lem, t_node *from, t_node *to);
+t_node	*find_node_without_delete(t_lem *lem, const char *name);
+
 #endif

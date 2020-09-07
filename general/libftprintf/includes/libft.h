@@ -151,13 +151,13 @@ void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-void			ft_lst_pb(t_list **begin_list,
+int				ft_lst_pb(t_list **begin_list,
 				void const *content, size_t content_size);
 long int		ft_lstsize(t_list *begin_list);
 t_list			*ft_lstfind(t_list *lst,
 							  int (*finder)(void *, void *), void *to_find);
 t_list			*ft_lstnew_copy(void const *content, size_t content_size);
-void			ft_lst_pb_copy(t_list **begin_list,
+int				ft_lst_pb_copy(t_list **begin_list,
 					   void const *content, size_t content_size);
 void			ft_lstiter_ext(t_list *lst, void *stuff, void (*f)(t_list *, void *));
 

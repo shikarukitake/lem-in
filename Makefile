@@ -11,6 +11,7 @@ SR_LI_1 =	main.c \
 			solve.c \
 			t_node.c \
 			run_ants.c \
+			var.c \
 
 SOURCES_DIR = ./general/srcs/
 

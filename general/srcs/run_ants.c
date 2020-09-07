@@ -142,10 +142,21 @@ void			run_ants(t_lem *lem)
 	int		n_ants;
 	t_list	*path;
 	t_way	*ways;
+	t_way	*origin_ways;
 
 	n_ants = lem->n_ants;
 	lem->i = 0;
 
+//	if (lem->var->next)
+//	{
+//		if (lem->var->steps < lem->var->next->steps)
+//			ways = lem->var->ways;
+//		else
+//			ways = lem->var->next->ways;
+//	}
+//	else
+//		ways = lem->var->ways;
+	//ways = lem->var->next && lem->var->steps > lem->var->next->steps ? ways = lem->var->next->ways : lem->var->ways;
 	ways = lem->var->ways;
 	while (ways)
 	{

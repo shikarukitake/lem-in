@@ -166,10 +166,12 @@ void	one_path(t_lem *lem)
 		node->prev->in_way++;
 		node->in_way++;
 		if (edge)
-			ft_lst_pb(&path, edge, sizeof(t_edge));//TODO protect
+			if (!ft_lst_pb(&path, edge, sizeof(t_edge)))
+				error_f("one_path ft_lstnew malloc", 0);
 		node = node->prev;
 	}
-	ft_lst_pb(&(lem->paths), path, sizeof(t_list));//TODO protect
+	if (!ft_lst_pb(&(lem->paths), path, sizeof(t_list)))
+		error_f("one_path ft_lstnew malloc", 0);
 }
 
 void	many_paths(t_lem *lem)
@@ -278,96 +280,6 @@ void	dublicate_nodes(t_lem *lem)
 	}
 }
 
-//t_list	*find_and_delete_first(t_lem *lem)
-//{
-//	t_list	*old_paths;
-//	t_list	*temp;
-//	t_edge	*edge;
-//	t_list	*temp_list;
-//
-//	old_paths = lem->new_paths;
-//	edge = old_paths->content;
-//	temp = NULL;
-//	if (edge->from->s_or_end)
-//	{
-//		lem->new_paths = old_paths->next;
-//		ft_lstadd(&(temp), old_paths);
-//		ft_lst_pb(&(lem->paths), temp, sizeof(t_list));
-//		return (temp);
-//	}
-//	while (old_paths->next)
-//	{
-//		edge = old_paths->next->content;
-//		if (edge->from->s_or_end)
-//		{
-//			temp_list = old_paths->next->next;
-//			ft_lstadd(&(temp), old_paths->next);
-//			ft_lst_pb(&(lem->paths), temp, sizeof(t_list));
-//			old_paths->next = temp_list;
-//			return (temp);
-//		}
-//		old_paths = old_paths->next;
-//	}
-//	return (NULL);
-//}
-//
-//void	make_new_paths(t_lem *lem)
-//{
-//	t_list	*old_paths;
-//	t_list	*path;
-//	t_edge	*edge;
-//	t_edge	*temp_edge;
-//	t_list	*prev;
-//
-//	while (lem->new_paths)
-//	{
-//		path = find_and_delete_first(lem);
-//		if (!path)
-//			return;
-//		edge = path->content;
-//		old_paths = lem->new_paths;
-//		prev = NULL;
-//		ft_printf("\n\nEDGE: %s-%s", edge->from->name, edge->to->name);
-//		ft_printf("\nall path's edges:\n");
-//		ft_lstiter(lem->new_paths, &print_path);
-//		ft_printf("\n\n");
-//		while (old_paths)
-//		{
-//			temp_edge = old_paths->content;
-//			if (temp_edge->from == edge->to)//TODO FREE
-//			{
-//				ft_lst_pb(&path, temp_edge, sizeof(t_edge));
-//				if (prev)
-//				{
-//					prev->next = old_paths->next;
-//					old_paths = old_paths->next;
-//				}
-//				else
-//				{
-//					old_paths = old_paths->next;
-//					lem->new_paths = old_paths;
-//				}
-//				edge = temp_edge;
-//				if (edge->to == lem->graph->nodes->array[lem->graph->end])
-//				{
-//					break;
-//				}
-//				ft_printf("\n\nEDGE: %s-%s", temp_edge->from->name, temp_edge->to->name);
-//				ft_printf("\nall path's edges:\n");
-//				ft_lstiter(lem->new_paths, &print_path);
-//				ft_printf("\n\n");
-//			}
-//			else
-//			{
-//				prev = old_paths;
-//				old_paths = old_paths->next;
-//			}
-//			if (!old_paths)
-//				old_paths = lem->new_paths;
-//		}
-//	}
-//}
-
 int		equal_edges(t_edge *a, t_edge *b)
 {
 	if (a->from == b->from &&
@@ -433,19 +345,28 @@ void	make_new_paths(t_lem *lem)
 	t_list	*new_paths;
 	t_edge	*edge;
 	t_list	*path;
-
+	t_edge	*temp;//todo delete
 
 	lem->paths = NULL;
 	while (lem->new_paths)
 	{
 		path = NULL;
 		edge = find_edge(&(lem->new_paths), NULL, &start_edges);
-		ft_lst_pb(&path, edge, sizeof(t_edge));
-		ft_lst_pb(&(lem->paths), path, sizeof(t_list));
+		if (!ft_lst_pb(&path, edge, sizeof(t_edge)))
+			error_f("make_new_paths ft_lstnew malloc", 0);
+		if (!ft_lst_pb(&(lem->paths), path, sizeof(t_list)))
+			error_f("make_new_paths ft_lstnew malloc", 0);
 		while (edge->to != lem->graph->nodes->array[lem->graph->end])
 		{
+			temp = edge;
 			edge = find_edge(&(lem->new_paths), edge, &path_edges);
-			ft_lst_pb(&path, edge, sizeof(t_edge));
+			if (!ft_lst_pb(&path, edge, sizeof(t_edge)))
+				error_f("make_new_paths ft_lstnew malloc", 0);
+			if (edge == NULL)
+			{
+//				ft_lstiter(path, &print_path);
+				error_f("something wrong maybe very big map", 0);
+			}
 		}
 	}
 }
@@ -612,9 +533,11 @@ void	insert_node(t_lem *lem, t_list **new_path, t_edge *edge, int end)
 	from = edge->from;
 	to = edge->to;
 
-	ft_lst_pb_copy(new_path, from, sizeof(t_node));
+	if (!ft_lst_pb_copy(new_path, from, sizeof(t_node)))
+		error_f("insert_node ft_lstnew malloc", 0);
 	if (end)
-		ft_lst_pb_copy(new_path, to, sizeof(t_node));
+		if (!ft_lst_pb_copy(new_path, to, sizeof(t_node)))
+			error_f("insert_node ft_lstnew malloc", 0);
 }
 
 
@@ -763,6 +686,41 @@ void	refresh_nodes(t_lem *lem)
 	}
 }
 
+
+void	clear_in_way(t_lem *lem)
+{
+	t_node	**nodes;
+	int		i;
+
+	nodes = lem->graph->nodes->array;
+	i = 0;
+	while (i != lem->graph->len)
+	{
+		nodes[i]->in_way = 0;
+		i++;
+	}
+}
+
+void	set_way_path(t_list *elem)
+{
+	t_edge	*edge;
+
+	edge = elem->content;
+	edge->from->in_way++;
+	edge->to->in_way++;
+}
+
+void	set_way_paths(t_list *elem)
+{
+	ft_lstiter(elem->content, &set_way_path);
+}
+
+void	set_in_way(t_lem *lem)
+{
+	clear_in_way(lem);
+	ft_lstiter(lem->paths, &set_way_paths);
+}
+
 int		second_solve(t_lem *lem)
 {
 	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
@@ -773,6 +731,7 @@ int		second_solve(t_lem *lem)
 	delete_dublicates(lem);
 //	ft_printf("\nfinded paths:\n");
 //	print_paths(lem);
+	set_in_way(lem);
 	delete_disjoint_edges(lem);
 //	ft_printf("\ndeleted disjoint edges paths:\n");
 //	print_paths(lem);
@@ -814,6 +773,19 @@ int		check_solutions(t_lem *lem)
 	return (0);
 }
 
+void	choose_solution(t_lem *lem)
+{
+	t_var	*temp;
+
+	if (lem->var->next)
+		if (lem->var->steps > lem->var->next->steps)
+		{
+			temp = lem->var;
+			lem->var = lem->var->next;
+			free_var(&temp);
+		}
+}
+
 void	solve(t_lem *lem)
 {
 
@@ -827,6 +799,7 @@ void	solve(t_lem *lem)
 		if (second_solve(lem))
 			break;
 	delete_copy_nodes(lem);
+	choose_solution(lem);
 	run_ants(lem);
 }
 //todo ANTS RUNNING

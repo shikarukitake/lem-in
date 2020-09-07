@@ -169,6 +169,8 @@ void		reading(t_lem *lem)
 	lem->graph->len = 0;
 	while (ft_get_next_line(0, &(lem->temps)))
 	{
+		if (ft_strlen(lem->temps) == 0)
+			error_f("reading error", 0);
 		if (lem->temps == NULL)
 			error_f("reading gnl malloc", 0);
 		if (i == 0)
