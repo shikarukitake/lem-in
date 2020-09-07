@@ -56,6 +56,6 @@ int		create_edge(t_lem	*lem)
 		}
 		i++;
 	}
-	lem->edges = list;
+	lem->origin_edges = list;
 	return (1);
 }

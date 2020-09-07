@@ -174,20 +174,26 @@ void	one_path(t_lem *lem)
 		error_f("one_path ft_lstnew malloc", 0);
 }
 
-void	many_paths(t_lem *lem)
-{
-
-}
-
 void	make_paths(t_lem *lem, int suurbale)
 {
 	t_list	*path;
 	t_node	*node;
+	t_edge	*edge;
 
-	if (suurbale == 0)
-		one_path(lem);
-	else
-		many_paths(lem);
+	path = NULL;
+	node = lem->graph->nodes->array[lem->graph->end];
+	while (node->prev)
+	{
+		edge = get_edge(node->prev, node, lem);
+		node->prev->in_way++;
+		node->in_way++;
+		if (edge)
+			if (!ft_lst_pb(&path, edge, sizeof(t_edge)))
+				error_f("one_path ft_lstnew malloc", 0);
+		node = node->prev;
+	}
+	if (!ft_lst_pb(&(lem->paths), path, sizeof(t_list)))
+		error_f("one_path ft_lstnew malloc", 0);
 }
 
 void	create_copy(t_lem *lem, t_edge *edge_dub)
@@ -604,10 +610,31 @@ void	reverse_list(t_list **head_ref)
 	*head_ref = prev;
 }
 
+
+void copy_edge(t_lem *lem)
+{
+	t_list	*edges;
+	t_list	*new;
+	t_list	*new_lstnew;
+
+	edges = lem->origin_edges;
+	new = NULL;
+	while (edges)
+	{
+		new_lstnew = ft_lstnew_copy(edges->content, edges->content_size);
+		if (new_lstnew == NULL)
+			error_f("copy_edge ft_lstnew_copy", 0);
+		ft_lstadd(&new, new_lstnew);
+		edges = edges->next;
+	}
+	lem->edges = new;
+}
+
 void	first_solve(t_lem *lem)
 {
 	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
 	create_edge(lem);
+	copy_edge(lem);
 	bellman_ford(lem);
 	if (!(lem->graph->nodes->array[lem->graph->end]->prev))
 		error_f("There is no path", 0);
@@ -721,6 +748,117 @@ void	set_in_way(t_lem *lem)
 	ft_lstiter(lem->paths, &set_way_paths);
 }
 
+int		second_solve_time(t_lem *lem)
+{
+	clock_t		begin;
+	clock_t		end;
+	double		time_spent;
+
+	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
+
+	printf("\n\nSTART");
+	begin = clock();
+	bellman_ford(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("bellman_ford: %f\n", time_spent);
+	if (!(lem->graph->nodes->array[lem->graph->end]->prev))
+		return (1);
+
+	begin = clock();
+	make_paths(lem, 0);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("make_paths: %f\n", time_spent);
+
+
+
+	begin = clock();
+	delete_dublicates(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("delete_dublicates: %f\n", time_spent);
+
+//	ft_printf("\nfinded paths:\n");
+//	print_paths(lem);
+	begin = clock();
+	set_in_way(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("set_in_way: %f\n", time_spent);
+
+	begin = clock();
+	delete_disjoint_edges(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("delete_disjoint_edges: %f\n", time_spent);
+
+//	ft_printf("\ndeleted disjoint edges paths:\n");
+//	print_paths(lem);
+	begin = clock();
+	all_edges_in_paths_connected(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("all_edges_in_paths_connected: %f\n", time_spent);
+//	ft_printf("\nall path's edges:\n");
+//	ft_lstiter(lem->new_paths, &print_path);
+//	ft_printf("\n\n");
+
+	begin = clock();
+	make_new_paths(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("make_new_paths: %f\n", time_spent);
+
+	if (lem->edges)
+		ft_lstdel(&(lem->edges), &del_edge);
+	begin = clock();
+	copy_edge(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("copy_edge: %f\n", time_spent);
+
+	begin = clock();
+	refresh_edges(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("refresh_edges: %f\n", time_spent);
+
+
+	begin = clock();
+	delete_copy_nodes(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("delete_copy_nodes: %f\n", time_spent);
+//	ft_printf("\n\nall new paths:\n");
+//	if (lem->paths)
+//		print_paths(lem);
+	begin = clock();
+	dublicate_nodes(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("dublicate_nodes: %f\n", time_spent);
+
+
+	begin = clock();
+	make_solutuins_from_second(lem);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("make_solutuins_from_second: %f\n", time_spent);
+
+	begin = clock();
+	count_steps(lem, lem->var);
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("count_steps: %f\n", time_spent);
+
+//	ft_printf("\nsteps=%d\n\n", lem->var->steps);
+	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
+//	ft_lstiter(lem->edges, &print_edges);
+//	ft_lstiter(lem->edges, &print_edges);
+	return (0);
+}
+
 int		second_solve(t_lem *lem)
 {
 	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
@@ -729,29 +867,30 @@ int		second_solve(t_lem *lem)
 		return (1);
 	make_paths(lem, 0);
 	delete_dublicates(lem);
-//	ft_printf("\nfinded paths:\n");
-//	print_paths(lem);
+	ft_printf("\nfinded paths:\n");
+	print_paths(lem);
 	set_in_way(lem);
 	delete_disjoint_edges(lem);
-//	ft_printf("\ndeleted disjoint edges paths:\n");
-//	print_paths(lem);
+	ft_printf("\ndeleted disjoint edges paths:\n");
+	print_paths(lem);
 	all_edges_in_paths_connected(lem);
-//	ft_printf("\nall path's edges:\n");
-//	ft_lstiter(lem->new_paths, &print_path);
-//	ft_printf("\n\n");
+	ft_printf("\nall path's edges:\n");
+	ft_lstiter(lem->new_paths, &print_path);
+	ft_printf("\n\n");
 	make_new_paths(lem);
 	if (lem->edges)
 		ft_lstdel(&(lem->edges), &del_edge);
-	create_edge(lem);
+//	create_edge(lem);
+	copy_edge(lem);
 	refresh_edges(lem);
 	delete_copy_nodes(lem);
-//	ft_printf("\n\nall new paths:\n");
-//	if (lem->paths)
-//		print_paths(lem);
+	ft_printf("\n\nall new paths:\n");
+	if (lem->paths)
+		print_paths(lem);
 	dublicate_nodes(lem);
 	make_solutuins_from_second(lem);
 	count_steps(lem, lem->var);
-//	ft_printf("\nsteps=%d\n\n", lem->var->steps);
+	ft_printf("\nsteps=%d\n\n", lem->var->steps);
 	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
 //	ft_lstiter(lem->edges, &print_edges);
 //	ft_lstiter(lem->edges, &print_edges);
@@ -796,8 +935,18 @@ void	solve(t_lem *lem)
 
 	//second
 	while (check_solutions(lem))
-		if (second_solve(lem))
-			break;
+	{
+		if (lem->dflag == 0)
+		{
+			if (second_solve(lem))
+				break;
+		}
+		else if (lem->dflag == 1)
+		{
+			if (second_solve_time(lem))
+				break;
+		}
+	}
 	delete_copy_nodes(lem);
 	choose_solution(lem);
 	run_ants(lem);

@@ -62,8 +62,8 @@ int		bellman_ford(t_lem *lem)
 				r = r_temp;
 			edges = edges->next;
 		}
-//		if (r == FT_FALSE)
-//			break;
+		if (r == FT_FALSE)
+			break;
 		i++;
 	}
 	return (FT_TRUE);

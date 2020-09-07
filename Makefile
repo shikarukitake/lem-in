@@ -1,4 +1,4 @@
-NAME_1 = lem_in
+NAME_1 = lem-in
 
 LIBFT_A = libftprintf.a
 

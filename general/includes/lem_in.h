@@ -6,6 +6,8 @@
 # define LEM_IN_H
 
 # include "libft.h"
+# include <time.h> //todo DELETE
+# include <stdio.h> //todo DELETE
 
 typedef struct s_dynamicarr t_dynamicarr;
 
@@ -72,10 +74,12 @@ typedef struct	s_lem
 	int		next_start;
 	int		next_end;
 	t_list	*edges;
+	t_list	*origin_edges;
 	t_list	*new_paths;
 	t_list	*paths;
 	t_var	*var;
 	int		i;
+	short	dflag;
 }				t_lem;
 
 

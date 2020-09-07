@@ -18,6 +18,7 @@ static t_lem	*init_lem()
 		lem->new_paths = NULL;
 		lem->paths = NULL;
 		lem->var = NULL;
+		lem->dflag = 0;
 		return (lem);
 	}
 }
@@ -58,6 +59,8 @@ void			free_lem(t_lem *lem)
 {
 	if (lem->edges)
 		ft_lstdel(&(lem->edges), &del_edge);
+	if (lem->origin_edges)
+		ft_lstdel(&(lem->origin_edges), &del_edge);
 	free_graph(&(lem->graph));
 	if (lem->paths)
 		ft_lstdel(&(lem->paths), &free_paths);

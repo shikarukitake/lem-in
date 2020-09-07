@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/01 23:07:33 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/07 19:01:06 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,24 @@ void	print_graph(t_lem *lem)
 	}
 }
 
-int		main(void)
+void	parse_flags_lemin(int ac, char **av)
+{
+	int	i;
+
+	i = 1;
+	lem->dflag = 0;
+	while (i != ac)
+	{
+		if (!ft_strcmp("-d", av[i]))
+			lem->dflag = 1;
+		i++;
+	}
+}
+
+int		main(int ac, char **av)
 {
 	lem = error_f(NULL, 1);
+	parse_flags_lemin(ac, av);
 	reading(lem);//bogdan
 	//print_graph(lem);
 	ft_printf("\n");

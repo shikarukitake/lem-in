@@ -1,7 +1,5 @@
 #include "lem_in.h"
 
-extern t_lem	*lem;
-
 void			print_ants(t_list *list)
 {
 	t_edge	*edge;
@@ -62,7 +60,7 @@ int				all_ants_in_finish(t_lem *lem)
 	return (1);
 }
 
-void			set_node(t_list	*path, t_way *way)
+void			set_node(t_list	*path, t_way *way, t_lem *lem)
 {
 	t_node	*node;
 	t_node	*next;
@@ -91,23 +89,9 @@ void			set_node(t_list	*path, t_way *way)
 				node->ant = next->ant;
 			path = path->next;
 		}
-//	if (from->s_or_end)
-//	{
-//		if (way->ants > 0)
-//		{
-//			to->ant = ++(lem->i);
-//			way->ants--;
-//		}
-//		else if (way->ants <= 0)
-//		{
-//			to->ant = -1;
-//		}
-//	}
-//	else
-//		to->ant = from->ant;
 }
 
-void			print_nodes()
+void			print_nodes(t_lem *lem)
 {
 	int		i;
 	t_node	*node;
@@ -147,16 +131,6 @@ void			run_ants(t_lem *lem)
 	n_ants = lem->n_ants;
 	lem->i = 0;
 
-//	if (lem->var->next)
-//	{
-//		if (lem->var->steps < lem->var->next->steps)
-//			ways = lem->var->ways;
-//		else
-//			ways = lem->var->next->ways;
-//	}
-//	else
-//		ways = lem->var->ways;
-	//ways = lem->var->next && lem->var->steps > lem->var->next->steps ? ways = lem->var->next->ways : lem->var->ways;
 	ways = lem->var->ways;
 	while (ways)
 	{
@@ -169,17 +143,10 @@ void			run_ants(t_lem *lem)
 		while (ways)
 		{
 			path = ways->path;
-			set_node(path, ways);
+			set_node(path, ways, lem);
 			ways = ways->next;
 		}
-		print_nodes();
-//		ways = lem->var->ways;
-//		while (ways)
-//		{
-//			path = ways->path;
-//			ft_lstiter(path, &print_ants);
-//			ways = ways->next;
-//		}
+		print_nodes(lem);
 	}
 
 }
