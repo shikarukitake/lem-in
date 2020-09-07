@@ -194,20 +194,26 @@ void	create_copy(t_lem *lem, t_edge *edge_dub)
 	t_node	*current;
 
 	current = edge_dub->from;
-	copy = new_node(ft_strjoin(current->name, "_copy"), "0", "0");
-	if (!copy)
-		error_f("create_copy new_node malloc", 0);
-	copy->is_copy = 1;
-	copy->copy = edge_dub->from;
-	edge_dub->from->copy = copy;
+	if (current->copy == NULL)
+	{
+		copy = new_node(ft_strjoin(current->name, "_copy"), "0", "0");
+		if (!copy)
+			error_f("create_copy new_node malloc", 0);
+		copy->is_copy = 1;
+		copy->copy = edge_dub->from;
+		edge_dub->from->copy = copy;
+	}
 
 	current = edge_dub->to;
-	copy = new_node(ft_strjoin(current->name, "_copy"), "0", "0");
-	if (!copy)
-		error_f("create_copy new_node malloc", 0);
-	copy->is_copy = 1;
-	copy->copy = edge_dub->to;
-	edge_dub->to->copy = copy;
+	if (current->copy == NULL)
+	{
+		copy = new_node(ft_strjoin(current->name, "_copy"), "0", "0");
+		if (!copy)
+			error_f("create_copy new_node malloc", 0);
+		copy->is_copy = 1;
+		copy->copy = edge_dub->to;
+		edge_dub->to->copy = copy;
+	}
 }
 
 void	one_relation(t_node *from, t_node *to, t_lem *lem)
