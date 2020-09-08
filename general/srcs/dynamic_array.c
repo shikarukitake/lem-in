@@ -42,7 +42,7 @@ int				init_darr(t_dynamicarr **arr)
 		{
 			swap = (*arr)->array;
 			if (!((*arr)->array = malloc(sizeof(t_node*) *
-					(((*arr)->len * 2) + 2))))
+					(((*arr)->len * 2) + 4))))
 				return (0);
 			cpy_array((*arr)->array, swap, 1, (*arr)->len);
 			(*arr)->freespace = (*arr)->len;//check
