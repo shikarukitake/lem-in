@@ -32,7 +32,11 @@ void	zero_weight(t_lem *lem)
 		if (i == lem->graph->start)
 			lem->graph->nodes->array[i]->weight = 0;
 		else
+		{
 			lem->graph->nodes->array[i]->weight = FT_INT_MAX;
+			if (lem->graph->nodes->array[i]->copy)
+				lem->graph->nodes->array[i]->copy->weight = FT_INT_MAX;
+		}
 		i++;
 	}
 }
@@ -41,6 +45,7 @@ int		bellman_ford(t_lem *lem)
 {
 	int		i;
 	int		r;
+	int		r_temp;
 	t_list	*edges;
 
 	i = 0;
@@ -51,7 +56,10 @@ int		bellman_ford(t_lem *lem)
 		r = FT_FALSE;
 		while (edges)
 		{
-			r = relax_edge(edges->content, lem);
+
+			r_temp = relax_edge(edges->content, lem);
+			if (!r)
+				r = r_temp;
 			edges = edges->next;
 		}
 		if (r == FT_FALSE)

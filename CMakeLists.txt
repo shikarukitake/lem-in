@@ -14,7 +14,7 @@ add_library(ftprintf STATIC ${LIBFT_FILES})
 
 
 # lem-in
-add_executable(lem_in general/srcs/main.c general/includes/lem_in.h general/srcs/reading.c general/srcs/service.c general/srcs/solve.c general/srcs/dynamic_array.c general/srcs/t_node.c general/srcs/bellman_ford.c general/srcs/edge.c general/srcs/suurbale.c)
+add_executable(lem_in general/srcs/main.c general/includes/lem_in.h general/srcs/reading.c general/srcs/service.c general/srcs/solve.c general/srcs/dynamic_array.c general/srcs/t_node.c general/srcs/bellman_ford.c general/srcs/edge.c general/srcs/suurbale.c general/srcs/run_ants.c general/srcs/var.c general/srcs/debug.c)
 target_link_libraries(lem_in ${PROJECT_BINARY_DIR}/libftprintf.a)
 add_dependencies(lem_in ftprintf)
 

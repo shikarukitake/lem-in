@@ -16,7 +16,6 @@ void	del_edge(void *edge_addr, size_t size)
 
 	edge = (t_edge*)edge_addr;
 	free(edge);
-
 }
 
 t_edge	*new_edge(t_node *from, t_node *to)
@@ -57,6 +56,6 @@ int		create_edge(t_lem	*lem)
 		}
 		i++;
 	}
-	lem->edges = list;
+	lem->origin_edges = list;
 	return (1);
 }

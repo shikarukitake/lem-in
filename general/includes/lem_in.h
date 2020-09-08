@@ -6,6 +6,8 @@
 # define LEM_IN_H
 
 # include "libft.h"
+# include <time.h> //todo DELETE
+# include <stdio.h> //todo DELETE
 
 typedef struct s_dynamicarr t_dynamicarr;
 
@@ -22,6 +24,7 @@ typedef struct	s_node
 	int				n_len;
 	int				in_way;
 	int				i;
+	int				ant;
 	int				weight;
 	struct s_node	*prev;
 	struct s_node	*copy;
@@ -44,6 +47,24 @@ typedef struct	s_edge
 	int				w;
 }				t_edge;
 
+typedef struct		s_way
+{
+	int				len;
+	int				ants;
+	int				on;
+	struct s_way	*next;
+	t_list 			*path;
+}					t_way;
+
+typedef struct	s_var
+{
+
+	int				n_ways;
+	int				steps;
+	struct s_var	*next;
+	t_way			*ways;
+}				t_var;
+
 typedef struct	s_lem
 {
 	t_graph	*graph;
@@ -53,9 +74,20 @@ typedef struct	s_lem
 	int		next_start;
 	int		next_end;
 	t_list	*edges;
+	t_list	*origin_edges;
 	t_list	*new_paths;
 	t_list	*paths;
+	t_var	*var;
+	int		i;
+	short	dflag;
 }				t_lem;
+
+
+/*
+** Extended list
+*/
+
+void			reverse_list(t_list **head_ref);
 
 /*
 ** Dynamic Array
@@ -71,7 +103,7 @@ typedef struct	s_dynamicarr
 
 int				init_darr(t_dynamicarr **arr);
 void			cpy_array(t_node **dest, t_node **src, int freeornot, int len);
-int				add_darr(t_dynamicarr **arr, t_node *value, int int_value);
+int add_darr(t_dynamicarr **arr, t_node *value);
 void			print_darr(t_dynamicarr *arr);
 void			free_d_arr(t_dynamicarr **arr, int free_neight);
 
@@ -81,6 +113,7 @@ void			free_d_arr(t_dynamicarr **arr, int free_neight);
 
 void			free_nodes(t_node **arr, int free_neight);
 t_node			*new_node(const char *name, const char *x, const char *y);
+void			free_node(t_node **node_to_del);
 
 /*
 ** service
@@ -112,8 +145,23 @@ void	del_edge(void *edge_addr, size_t size);
 void	print_edges(t_list *elem);
 
 /*
-** suurbale
+** run ants
 */
-int		suurbale(t_lem *lem);
+
+void	run_ants(t_lem *lem);
+
+/*
+** var structure
+*/
+
+void	free_var(t_var	**var);
+void	free_vars(t_var **vars);
+
+/*
+** debug
+*/
+
+t_edge	*find_edge_without_delete(t_lem *lem, t_node *from, t_node *to);
+t_node	*find_node_without_delete(t_lem *lem, const char *name);
 
 #endif

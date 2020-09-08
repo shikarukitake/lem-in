@@ -76,9 +76,9 @@ void		create_link(t_lem *lem)
 
 	if (in_neighbors(f->neighbors, f->n_len, s) == 0)
 	{
-		if (!add_darr(&f->neighbors, s, 1))
+		if (!add_darr(&f->neighbors, s))
 			error_f("create_link add_darr malloc", 0);
-		if (!add_darr(&s->neighbors, f, 1))
+		if (!add_darr(&s->neighbors, f))
 			error_f("create_link add_darr malloc", 0);
 		f->n_len++;
 		s->n_len++;
@@ -116,7 +116,7 @@ void		parse_rooms(t_lem *lem)
 		if (lem->temps_d == NULL)
 			error_f("parse rooms ft_strsplit malloc", 0);
 		node = new_node(ft_strdup(lem->temps_d[0]), lem->temps_d[1], lem->temps_d[2]);
-		if (!add_darr(&nodes, node, FT_INT_MAX))
+		if (!add_darr(&nodes, node))
 			error_f("parse rooms add_darr malloc", 0);
 		node->i = nodes->len - 1;
 		if (lem->next_start)
@@ -148,6 +148,7 @@ void		parse(t_lem *lem)
 	{
 		parse_links(lem);
 		ft_printf("%s\n", lem->temps);
+
 	}
 	else
 	{
@@ -168,6 +169,8 @@ void		reading(t_lem *lem)
 	lem->graph->len = 0;
 	while (ft_get_next_line(0, &(lem->temps)))
 	{
+		if (ft_strlen(lem->temps) == 0)
+			error_f("reading error", 0);
 		if (lem->temps == NULL)
 			error_f("reading gnl malloc", 0);
 		if (i == 0)
@@ -177,6 +180,5 @@ void		reading(t_lem *lem)
 		i++;
 		free(lem->temps);
 	}
-	lem->graph->nodes->weights[lem->graph->start] = 0;//TODO DELETE
 	(lem->graph->nodes->array[lem->graph->start])->weight = 0;
 }

@@ -1,4 +1,4 @@
-NAME_1 = lem_in
+NAME_1 = lem-in
 
 LIBFT_A = libftprintf.a
 
@@ -10,6 +10,8 @@ SR_LI_1 =	main.c \
 			edge.c \
 			solve.c \
 			t_node.c \
+			run_ants.c \
+			var.c \
 
 SOURCES_DIR = ./general/srcs/
 

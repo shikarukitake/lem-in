@@ -1,5 +1,21 @@
 #include "lem_in.h"
 
+void	free_node(t_node **node_to_del)
+{
+	t_node	*node;
+
+	node = *node_to_del;
+	if (node->name)
+		free(node->name);
+	if (node->neighbors)
+	{
+		free(node->neighbors->array);
+		free(node->neighbors);
+	}
+	free(node);
+	*node_to_del = NULL;
+}
+
 void	free_nodes(t_node **arr, int free_neight)
 {
 	int	i;
@@ -7,17 +23,9 @@ void	free_nodes(t_node **arr, int free_neight)
 	i = 0;
 	while (arr[i])
 	{
-		free(arr[i]->name);
-		if (free_neight)
-		{
-			if (arr[i]->neighbors)
-			{
-				free(arr[i]->neighbors->array);
-				free(arr[i]->neighbors->weights);
-				free(arr[i]->neighbors);
-			}
-		}
-		free(arr[i]);
+		if (arr[i]->copy)
+			free_node(&(arr[i]->copy));
+		free_node(&(arr[i]));
 		i++;
 	}
 	free(arr);
@@ -45,5 +53,7 @@ t_node	*new_node(const char *name, const char *x, const char *y)
 	new->prev = NULL;
 	new->weight = FT_INT_MAX;
 	new->is_copy = 0;
+	new->copy = NULL;
+	new->ant = 0;
 	return (new);
 }

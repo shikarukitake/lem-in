@@ -17,6 +17,8 @@ static t_lem	*init_lem()
 		lem->edges = NULL;
 		lem->new_paths = NULL;
 		lem->paths = NULL;
+		lem->var = NULL;
+		lem->dflag = 0;
 		return (lem);
 	}
 }
@@ -43,11 +45,26 @@ void			del_l(void *content, size_t size)
 	ft_lstdel(&list, NULL);
 }
 
+void			free_path(void *path_void, size_t size)
+{
+
+}
+
+void			free_paths(void *path_void, size_t size)
+{
+	ft_lstdel(&path_void, &del_edge);
+}
+
 void			free_lem(t_lem *lem)
 {
 	if (lem->edges)
 		ft_lstdel(&(lem->edges), &del_edge);
+	if (lem->origin_edges)
+		ft_lstdel(&(lem->origin_edges), &del_edge);
 	free_graph(&(lem->graph));
+	if (lem->paths)
+		ft_lstdel(&(lem->paths), &free_paths);
+	free_vars(&(lem->var));
 	free(lem);
 }
 
