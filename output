@@ -7320,3 +7320,29 @@ Ynd0-Tmp5
 U_v6-Ruj7
 #Here is the number of lines required: 71
 
+void	delete_disjoint_edges(t_lem *lem)
+{
+	t_list	*paths;
+	t_edge	*edge;
+	t_edge	*finded;
+
+	paths = lem->new_paths;
+	while (paths)
+	{
+		edge = paths->content;
+		if (edge->from->in_way > 2 && edge->to->in_way > 2)
+		{
+			finded = find_edge(&paths, edge, &disjoint_edge);
+			if (finded)
+			{
+				free(finded);
+				finded = find_edge(&paths, edge, &equal_edges);
+				finded->from->in_way -= 2;
+				finded->to->in_way -= 2;
+				free(finded);
+			}
+		}
+		else
+			paths = paths->next;
+	}
+}

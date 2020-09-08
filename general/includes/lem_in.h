@@ -103,7 +103,7 @@ typedef struct	s_dynamicarr
 
 int				init_darr(t_dynamicarr **arr);
 void			cpy_array(t_node **dest, t_node **src, int freeornot, int len);
-int				add_darr(t_dynamicarr **arr, t_node *value, int int_value);
+int add_darr(t_dynamicarr **arr, t_node *value);
 void			print_darr(t_dynamicarr *arr);
 void			free_d_arr(t_dynamicarr **arr, int free_neight);
 

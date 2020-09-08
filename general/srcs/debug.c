@@ -34,3 +34,12 @@ t_edge	*find_edge_without_delete(t_lem *lem, t_node *from, t_node *to)
 	}
 	return (NULL);
 }
+
+t_list	*find_end(t_list *list)
+{
+	while (list->next)
+	{
+		list = list->next;
+	}
+	return (list);
+}

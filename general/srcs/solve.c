@@ -104,9 +104,11 @@ t_edge	*get_other_edge(t_node *from, t_node *to, t_list *edges, int *running)
 	t_edge	*edge;
 	t_list	*temp;
 
+
 	edge = edges->next->content;
 	if (edge->from == from && edge->to == to)
 	{
+
 		temp = edges->next->next;
 		free(edges->next);
 		edges->next = temp;
@@ -235,7 +237,10 @@ void	one_relation(t_node *from, t_node *to, t_lem *lem)
 	edge->w = 0;
 	new = ft_lstnew(edge, sizeof(t_edge));
 	if (!new)
+	{
+		free(edge);
 		error_f("add_relation ft_lstnew malloc", 0);
+	}
 	ft_lstadd(&(lem->edges), new);
 }
 
@@ -299,6 +304,27 @@ int		path_edges(t_edge *a, t_edge *b)
 {
 	if (b->to == a->from)
 		return (1);
+	else
+		return (0);
+}
+
+int		disjoint_edge(t_edge *a, t_edge *b)
+{
+	if (a->from == b->to && a->to == b->from)
+		return (1);
+	else
+		return (0);
+}
+
+int		in_way_edge(t_edge *a, t_edge *b)
+{
+	if (a->from->in_way > 2 && a->to->in_way > 2)
+	{
+		if (a->from->s_or_end || a->to->s_or_end)
+			return (0);
+		else
+			return (1);
+	}
 	else
 		return (0);
 }
@@ -442,10 +468,13 @@ void	delete_dublicates(t_lem *lem)
 	lem->edges = NULL;
 }
 
+
+
 void	delete_disjoint(t_list	*list)
 {
 	t_edge	*edge;
 	t_list	*temp;
+
 
 	if (list->next)
 	{
@@ -462,16 +491,48 @@ void	delete_disjoint(t_list	*list)
 	}
 }
 
+void	cpy_back(t_lem *lem, t_list	*temp_list)
+{
+	t_list	*temp;
+
+	temp = temp_list;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = lem->new_paths;
+	lem->new_paths = temp_list;
+}
+
 void	delete_disjoint_edges(t_lem *lem)
 {
-	t_list	*paths;
+	t_edge	*edge;
+	t_edge	*temp;
+	t_list	*temp_list;
 
-	paths = lem->paths;
-	while (paths)
+	temp_list = NULL;
+	edge = find_edge(&(lem->new_paths), NULL, &in_way_edge);
+	while (edge)
 	{
-		ft_lstiter(paths->content, &delete_disjoint);
-		paths = paths->next;
+		if (edge->from == edge->to)
+			free(edge);
+		else
+		{
+			temp = find_edge(&(lem->new_paths), edge, &disjoint_edge);
+			if (temp)
+			{
+				edge->from->in_way -= 2;
+				edge->to->in_way -= 2;
+				free(edge);
+				free(temp);
+			} else
+			{
+				if (!ft_lst_pb(&temp_list, edge, sizeof(t_edge)))
+					error_f("delete_disjoint malloc", 0);//todo safe
+			}
+		}
+		edge = find_edge(&(lem->new_paths), NULL, &in_way_edge);
 	}
+	if (temp_list)
+		cpy_back(lem, temp_list);
 }
 
 void	all_edges_in_paths_connected(t_lem *lem)
@@ -639,7 +700,8 @@ void	first_solve(t_lem *lem)
 	if (!(lem->graph->nodes->array[lem->graph->end]->prev))
 		error_f("There is no path", 0);
 	make_paths(lem, 0);
-	dublicate_nodes(lem);
+	if (ft_lstsize(lem->paths->content) > 1)
+		dublicate_nodes(lem);
 	reverse_list(&(lem->paths->content));
 	make_solution_from_first(lem);
 	count_steps(lem, lem->var);
@@ -859,24 +921,53 @@ int		second_solve_time(t_lem *lem)
 	return (0);
 }
 
+void make_paths_many(t_lem *lem)
+{
+	t_list	*path;
+	t_node	*node;
+	t_edge	*edge;
+
+	path = NULL;
+	node = lem->graph->nodes->array[lem->graph->end];
+	while (node->prev)
+	{
+		edge = new_edge(node->prev, node);
+		node->prev->in_way++;
+		node->in_way++;
+		if (!edge)
+			error_f("make_paths_many malloc", 0);
+		if (!ft_lst_pb(&path, edge, sizeof(t_edge)))
+			error_f("make_paths_many ft_lstnew malloc", 0);
+		node = node->prev;
+	}
+	if (!ft_lst_pb(&(lem->paths), path, sizeof(t_list)))
+		error_f("one_path ft_lstnew malloc", 0);
+}
+
 int		second_solve(t_lem *lem)
 {
 	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
 	bellman_ford(lem);
 	if (!(lem->graph->nodes->array[lem->graph->end]->prev))
 		return (1);
-	make_paths(lem, 0);
+	make_paths_many(lem);
 	delete_dublicates(lem);
-	ft_printf("\nfinded paths:\n");
-	print_paths(lem);
+//	ft_printf("\nfinded paths:\n");
+//	print_paths(lem);
 	set_in_way(lem);
-	delete_disjoint_edges(lem);
-	ft_printf("\ndeleted disjoint edges paths:\n");
-	print_paths(lem);
+
 	all_edges_in_paths_connected(lem);
-	ft_printf("\nall path's edges:\n");
-	ft_lstiter(lem->new_paths, &print_path);
-	ft_printf("\n\n");
+//	ft_printf("\nall path's edges:\n");
+//	ft_lstiter(lem->new_paths, &print_path);
+
+
+//	ft_printf("\n\n");
+	delete_disjoint_edges(lem);
+//	ft_printf("\ndeleted disjoint edges paths:\n");
+//	ft_lstiter(lem->new_paths, &print_path);
+
+
+
 	make_new_paths(lem);
 	if (lem->edges)
 		ft_lstdel(&(lem->edges), &del_edge);
@@ -884,13 +975,13 @@ int		second_solve(t_lem *lem)
 	copy_edge(lem);
 	refresh_edges(lem);
 	delete_copy_nodes(lem);
-	ft_printf("\n\nall new paths:\n");
-	if (lem->paths)
-		print_paths(lem);
+//	ft_printf("\n\nall new paths:\n");
+//	if (lem->paths)
+//		print_paths(lem);
 	dublicate_nodes(lem);
 	make_solutuins_from_second(lem);
 	count_steps(lem, lem->var);
-	ft_printf("\nsteps=%d\n\n", lem->var->steps);
+//	ft_printf("\nsteps=%d\n\n", lem->var->steps);
 	lem->graph->nodes->array[lem->graph->end]->prev = NULL;
 //	ft_lstiter(lem->edges, &print_edges);
 //	ft_lstiter(lem->edges, &print_edges);

@@ -10,7 +10,6 @@ void	free_node(t_node **node_to_del)
 	if (node->neighbors)
 	{
 		free(node->neighbors->array);
-		free(node->neighbors->weights);
 		free(node->neighbors);
 	}
 	free(node);
