@@ -1,6 +1,5 @@
 #include "lem_in.h"
 
-
 int		check_solutions(t_lem *lem)
 {
 	if (lem->var->next == NULL)

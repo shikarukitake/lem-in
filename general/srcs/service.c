@@ -47,7 +47,6 @@ void			del_l(void *content, size_t size)
 
 void			free_path(void *path_void, size_t size)
 {
-
 }
 
 void			free_paths(void *path_void, size_t size)

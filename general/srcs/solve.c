@@ -45,7 +45,7 @@ void	solve(t_lem *lem)
 	first_solve(lem);
 	while (check_solutions(lem))
 		if (second_solve(lem))
-			break;
+			break ;
 	delete_copy_nodes(lem);
 	choose_solution(lem);
 	run_ants(lem);

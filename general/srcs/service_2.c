@@ -2,9 +2,13 @@
 
 void	reverse_list(t_list **head_ref)
 {
-	t_list	*prev = NULL;
-	t_list	*current = *head_ref;
-	t_list	*next = NULL;
+	t_list	*prev;
+	t_list	*current;
+	t_list	*next;
+
+	prev = NULL;
+	current = *head_ref;
+	next = NULL;
 	while (current != NULL)
 	{
 		next = current->next;

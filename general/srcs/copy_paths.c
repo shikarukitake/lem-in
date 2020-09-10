@@ -22,14 +22,12 @@ void	insert_node(t_lem *lem, t_list **new_path, t_edge *edge, int end)
 
 	from = edge->from;
 	to = edge->to;
-
 	if (!ft_lst_pb_copy(new_path, from, sizeof(t_node)))
 		error_f("insert_node ft_lstnew malloc", 0);
 	if (end)
 		if (!ft_lst_pb_copy(new_path, to, sizeof(t_node)))
 			error_f("insert_node ft_lstnew malloc", 0);
 }
-
 
 void	copy_path_part(t_lem *lem, t_list *path, t_list **new_path, int *i)
 {

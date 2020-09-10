@@ -26,8 +26,6 @@ int				all_ants_in_finish(t_lem *lem)
 	while (ways)
 	{
 		path = ways->path;
-//		while (path->next)
-//			path = path->next;
 		node = path->content;
 		if (ways->ants > 0 || node->ant != -1)
 			return (0);
@@ -106,7 +104,6 @@ void			run_ants(t_lem *lem)
 
 	n_ants = lem->n_ants;
 	lem->i = 0;
-
 	ways = lem->var->ways;
 	while (ways)
 	{
@@ -124,5 +121,4 @@ void			run_ants(t_lem *lem)
 		}
 		print_nodes(lem);
 	}
-
 }

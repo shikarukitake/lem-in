@@ -31,7 +31,7 @@ t_edge	*new_edge(t_node *from, t_node *to)
 	return (edge);
 }
 
-int		create_edge(t_lem	*lem)
+int		create_edge(t_lem *lem)
 {
 	int		i;
 	int		j;
@@ -52,7 +52,7 @@ int		create_edge(t_lem	*lem)
 			if (edge == NULL)
 				error_f("edge malloc error", 0);
 			j++;
-			ft_lst_pb(&list, edge, sizeof(t_edge));//protect
+			ft_lst_pb(&list, edge, sizeof(t_edge));
 		}
 		i++;
 	}

@@ -27,7 +27,6 @@ void		create_link(t_lem *lem, const char *first, const char *second)
 
 	f = find_node(first, lem->graph);
 	s = find_node(second, lem->graph);
-
 	if (in_neighbors(f->neighbors, f->n_len, s) == 0)
 	{
 		if (!add_darr(&f->neighbors, s))
@@ -39,7 +38,7 @@ void		create_link(t_lem *lem, const char *first, const char *second)
 	}
 }
 
-t_graph	*new_graph(void)
+t_graph		*new_graph(void)
 {
 	t_graph	*graph;
 
@@ -51,7 +50,7 @@ t_graph	*new_graph(void)
 	return (graph);
 }
 
-t_node *get_node(t_read *read, t_lem *lem, t_rooms *rooms, int i)
+t_node		*get_node(t_read *read, t_lem *lem, t_rooms *rooms, int i)
 {
 	t_node	*node;
 

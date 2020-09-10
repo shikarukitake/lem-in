@@ -53,6 +53,5 @@ void	delete_dublicates(t_lem *lem)
 		paths = paths->next;
 	}
 	ft_lstdel(&(lem->edges), &del_edge);
-
 	lem->edges = NULL;
 }

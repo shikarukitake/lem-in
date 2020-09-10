@@ -1,21 +1,20 @@
-//
-// Created by Sole Dagger on 8/11/20.
-//
-
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
 # include "libft.h"
-# include <time.h> //todo DELETE
-# include <stdio.h> //todo DELETE
 
-typedef struct s_dynamicarr t_dynamicarr;
+typedef struct		s_dynamicarr
+{
+	struct s_node	**array;
+	int				len;
+	int				freespace;
+}					t_dynamicarr;
 
 /*
 ** lem structures
 */
 
-typedef struct	s_node
+typedef struct		s_node
 {
 	char			*name;
 	t_dynamicarr	*neighbors;
@@ -30,22 +29,22 @@ typedef struct	s_node
 	struct s_node	*copy;
 	int				s_or_end;
 	int				is_copy;
-}				t_node;
+}					t_node;
 
-typedef struct	s_grapg
+typedef struct		s_grapg
 {
 	int				len;
-	t_dynamicarr	*nodes;//array add_darr(&nodes, value)
+	t_dynamicarr	*nodes;
 	int				start;
 	int				end;
-}				t_graph;
+}					t_graph;
 
-typedef struct	s_edge
+typedef struct		s_edge
 {
 	t_node			*from;
 	t_node			*to;
 	int				w;
-}				t_edge;
+}					t_edge;
 
 typedef struct		s_way
 {
@@ -53,19 +52,19 @@ typedef struct		s_way
 	int				ants;
 	int				on;
 	struct s_way	*next;
-	t_list 			*path;
+	t_list			*path;
 }					t_way;
 
-typedef struct	s_var
+typedef struct		s_var
 {
 
 	int				n_ways;
 	int				steps;
 	struct s_var	*next;
 	t_way			*ways;
-}				t_var;
+}					t_var;
 
-typedef struct	s_lem
+typedef struct		s_lem
 {
 	t_graph	*graph;
 	char	*temps;
@@ -80,8 +79,7 @@ typedef struct	s_lem
 	t_var	*var;
 	int		i;
 	short	dflag;
-}				t_lem;
-
+}					t_lem;
 
 /*
 ** Extended list
@@ -93,15 +91,9 @@ void				reverse_list(t_list **head_ref);
 ** Dynamic Array
 */
 
-typedef struct		s_dynamicarr
-{
-	t_node	**array;
-	int		len;
-	int		freespace;
-}					t_dynamicarr;
-
 int					init_darr(t_dynamicarr **arr);
-void				cpy_array(t_node **dest, t_node **src, int freeornot, int len);
+void				cpy_array(t_node **dest, t_node **src,
+					int freeornot, int len);
 int					add_darr(t_dynamicarr **arr, t_node *value);
 void				print_darr(t_dynamicarr *arr);
 void				free_d_arr(t_dynamicarr **arr, int free_neight);
@@ -187,7 +179,8 @@ int					path_edges(t_edge *a, t_edge *b);
 int					disjoint_edge(t_edge *a, t_edge *b);
 int					in_way_edge(t_edge *a, t_edge *b);
 int					start_edges(t_edge *a, t_edge *b);
-t_edge				*find_edge(t_list **paths, t_edge *edge, int (*f)(t_edge*, t_edge*));
+t_edge				*find_edge(t_list **paths, t_edge *edge,
+								int (*f)(t_edge*, t_edge*));
 
 /*
 ** get_edge
@@ -208,14 +201,15 @@ void				delete_disjoint_edges(t_lem *lem);
 ** debug
 */
 
-t_edge	*find_edge_without_delete(t_lem *lem, t_node *from, t_node *to);
-t_node	*find_node_without_delete(t_lem *lem, const char *name);
+t_edge				*find_edge_without_delete(t_lem *lem,
+									t_node *from, t_node *to);
+t_node				*find_node_without_delete(t_lem *lem, const char *name);
 
 /*
 ** reading from Bogdan
 */
 
-typedef struct 		s_rooms
+typedef struct		s_rooms
 {
 	char			*room;
 	int				x;
@@ -230,8 +224,7 @@ typedef struct		s_cnct
 	struct s_cnct	*next;
 }					t_cnct;
 
-
-typedef struct 		s_read
+typedef struct		s_read
 {
 	int				ant_cnt;
 	char			*start_name;

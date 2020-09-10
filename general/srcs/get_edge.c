@@ -30,7 +30,6 @@ t_edge	*get_other_edge(t_node *from, t_node *to, t_list *edges, int *running)
 	edge = edges->next->content;
 	if (edge->from == from && edge->to == to)
 	{
-
 		temp = edges->next->next;
 		free(edges->next);
 		edges->next = temp;

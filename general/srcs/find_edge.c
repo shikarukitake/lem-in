@@ -1,7 +1,7 @@
 #include "lem_in.h"
 
 t_edge	*find_edge_part(t_edge *edge, int (*f)(t_edge *, t_edge *),
-						  t_list *temp, t_list *prev)
+						t_list *temp, t_list *prev)
 {
 	t_edge	*finded;
 

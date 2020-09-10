@@ -1,6 +1,6 @@
 #include "lem_in.h"
 
-void	free_var(t_var	**var)//todo complete free
+void	free_var(t_var **var)
 {
 	t_way	*ways;
 	t_way	*temp;
