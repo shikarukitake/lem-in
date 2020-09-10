@@ -16,6 +16,43 @@ make
 ```
 Or you can open project with CLion and load CMake Project
 
+Then you can run program like this:
+```
+./lem-in < map_file
+```
+# Map file
+Structure of map looks like this:
+```
+number_of_ants
+the_rooms
+the_links
+```
+Example:
+```
+20
+##start
+A 0 1
+##end
+H 1 0
+B 0 0
+C 1 1
+D 2 2
+E 3 3
+F 4 4
+G 5 5
+A-B
+B-C
+C-D
+D-H
+A-E
+E-D
+E-F
+D-F
+F-G
+G-H
+```
+Comments "##start" and "##end" are provided to show the start and end room information.
+
 # Marks
 ```
 **in progress**
@@ -23,10 +60,11 @@ Or you can open project with CLion and load CMake Project
 
 # Bonus
 ```
-**in progress**
+-l -- flag to print count of solution's lines
+-p -- flag to print finded paths
+-h -- flag to read the manual of flags
 ```
 
 # Resources
-```
-**in progress**
-```
+[Macfreek](http://www.macfreek.nl/memory/Disjoint_Path_Finding#Suurballe)
+
