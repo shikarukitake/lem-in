@@ -12,6 +12,11 @@ SR_LI_1 =	main.c \
 			t_node.c \
 			run_ants.c \
 			var.c \
+			count_steps.c \
+			set_in_way.c \
+			service_2.c \
+			solution.c \
+			copy_paths.c \
 
 SOURCES_DIR = ./general/srcs/
 

@@ -16,25 +16,9 @@ void			cpy_array(t_node **dest, t_node **src, int freeornot, int len)
 		free(src);
 }
 
-void			cpy_intarray(int *dest, int *src, int freeornot, int len)
-{
-	int i;
-
-	i = 0;
-	if (dest)
-		while (i != len)
-		{
-			dest[i] = src[i];
-			i++;
-		}
-	if (freeornot)
-		free(src);
-}
-
 int				init_darr(t_dynamicarr **arr)
 {
 	t_node	**swap;
-	int		*swap_int;
 
 	if (arr)
 	{
@@ -77,16 +61,6 @@ int			add_darr(t_dynamicarr **arr, t_node *value)
 		(*arr)->freespace -= 1;
 	}
 	return (1);
-}
-
-void			print_darr(t_dynamicarr *arr)
-{
-	int i;
-
-	i = 0;
-	while (i != arr->len)
-		ft_printf("%s \n", arr->array[i++]->name);
-	ft_printf("\n");
 }
 
 void			free_d_arr(t_dynamicarr **arr, int free_neight)

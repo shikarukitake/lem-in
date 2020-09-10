@@ -180,5 +180,4 @@ void		reading(t_lem *lem)
 		i++;
 		free(lem->temps);
 	}
-	(lem->graph->nodes->array[lem->graph->start])->weight = 0;
 }

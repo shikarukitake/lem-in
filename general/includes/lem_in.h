@@ -96,7 +96,6 @@ void				reverse_list(t_list **head_ref);
 typedef struct		s_dynamicarr
 {
 	t_node	**array;
-	int		*weights;
 	int		len;
 	int		freespace;
 }					t_dynamicarr;
@@ -123,6 +122,7 @@ t_node				*find_node(const char *name, t_graph *graph);
 
 t_lem				*error_f(char *text, int init);
 void				free_lem(t_lem *lem);
+void				reverse_list(t_list **head_ref);
 
 /*
 ** reading
@@ -136,6 +136,7 @@ void				reading(t_lem *lem);
 
 void				solve(t_lem *lem);
 int					bellman_ford(t_lem *lem);
+void				set_in_way(t_lem *lem);
 
 /*
 ** edges
@@ -150,6 +151,7 @@ void				print_edges(t_list *elem);
 ** run ants
 */
 
+void				count_steps(t_lem *lem, t_var *var);
 void				run_ants(t_lem *lem);
 
 /*
@@ -158,6 +160,17 @@ void				run_ants(t_lem *lem);
 
 void				free_var(t_var	**var);
 void				free_vars(t_var **vars);
+t_var				*new_var(int n_ways);
+int					check_solutions(t_lem *lem);
+void				choose_solution(t_lem *lem);
+void				make_solution_from_first(t_lem *lem);
+void				make_solutuins_from_second(t_lem *lem);
+
+/*
+** copy_paths
+*/
+
+void				copy_paths(t_lem *lem);
 
 /*
 ** debug

@@ -43,3 +43,24 @@ t_list	*find_end(t_list *list)
 	}
 	return (list);
 }
+
+void	print_path(t_list *list)
+{
+	t_edge	*edge;
+
+	edge = (list->content);
+	ft_printf("%s-%s ", edge->from->name, edge->to->name);
+}
+
+void	print_paths(t_lem *lem)
+{
+	t_list	*swap;
+
+	swap = lem->paths;
+	while (swap)
+	{
+		ft_lstiter(swap->content, &print_path);
+		swap = swap->next;
+		ft_printf("\n");
+	}
+}

@@ -17,6 +17,20 @@ void	free_var(t_var	**var)//todo complete free
 	*var = NULL;
 }
 
+t_var	*new_var(int n_ways)
+{
+	t_var	*var;
+
+	var = malloc(sizeof(t_var));
+	if (!var)
+		error_f("make solution from first var malloc error", 0);
+	var->n_ways = n_ways;
+	var->ways = NULL;
+	var->next = NULL;
+	var->steps = 0;
+	return (var);
+}
+
 void	free_vars(t_var **vars)
 {
 	t_var	*var;
