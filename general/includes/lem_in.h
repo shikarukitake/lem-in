@@ -137,6 +137,10 @@ void				reading(t_lem *lem);
 void				solve(t_lem *lem);
 int					bellman_ford(t_lem *lem);
 void				set_in_way(t_lem *lem);
+void				dublicate_nodes(t_lem *lem);
+void				make_paths(t_lem *lem, int suurbale);
+void				make_new_paths(t_lem *lem);
+void				make_paths_many(t_lem *lem);
 
 /*
 ** edges
@@ -146,6 +150,9 @@ t_edge				*new_edge(t_node *from, t_node *to);
 int					create_edge(t_lem	*lem);
 void				del_edge(void *edge_addr, size_t size);
 void				print_edges(t_list *elem);
+void				all_edges_in_paths_connected(t_lem *lem);
+void				copy_edge(t_lem *lem);
+void				refresh_edges(t_lem *lem);
 
 /*
 ** run ants
@@ -171,6 +178,31 @@ void				make_solutuins_from_second(t_lem *lem);
 */
 
 void				copy_paths(t_lem *lem);
+
+/*
+** find_edge
+*/
+
+int					path_edges(t_edge *a, t_edge *b);
+int					disjoint_edge(t_edge *a, t_edge *b);
+int					in_way_edge(t_edge *a, t_edge *b);
+int					start_edges(t_edge *a, t_edge *b);
+t_edge				*find_edge(t_list **paths, t_edge *edge, int (*f)(t_edge*, t_edge*));
+
+/*
+** get_edge
+*/
+
+t_edge				*get_edge(t_node *from, t_node *to, t_lem *lem);
+
+/*
+** delete copies or disjoint edges
+*/
+
+void				change_path_dublicates(t_list *list);
+void				delete_copy_nodes(t_lem *lem);
+void				delete_dublicates(t_lem *lem);
+void				delete_disjoint_edges(t_lem *lem);
 
 /*
 ** debug

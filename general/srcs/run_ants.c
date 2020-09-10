@@ -16,30 +16,6 @@ void			print_ants(t_list *list)
 	}
 }
 
-//int				all_ants_in_finish(t_lem *lem)
-//{
-//	t_list	*path;
-//	t_way	*ways;
-//	t_node	*node;
-//
-//	ways = lem->var->ways;
-//	while (ways)
-//	{
-//		path = ways->path;
-//		while (path)
-//		{
-//			node = (t_node*)(path->content);
-//			if (node->ant >= 0)
-//				return (0);
-//			path = path->next;
-//		}
-//		ways = ways->next;
-//	}
-//	if (lem->n_ants <= 0)
-//		return (1);
-//	return (0);
-//}
-
 int				all_ants_in_finish(t_lem *lem)
 {
 	t_list	*path;

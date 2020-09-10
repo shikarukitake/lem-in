@@ -17,6 +17,14 @@ SR_LI_1 =	main.c \
 			service_2.c \
 			solution.c \
 			copy_paths.c \
+			find_edge.c \
+			find_edge_functions.c \
+			get_edge.c \
+			delete_copies.c \
+			delete_disjoint.c \
+			dublicate_nodes.c \
+			edge_2.c \
+			make_paths.c \
 
 SOURCES_DIR = ./general/srcs/
 
