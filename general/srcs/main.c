@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/10 15:47:59 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/10 16:18:39 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,42 @@ void	parse_flags_lemin(int ac, char **av, t_lem *lem)
 	}
 }
 
+void	print_node_path(t_list *list)
+{
+	t_node	*node;
+
+	node = list->content;
+	if (node)
+		ft_printf(" %s", node->name);
+}
+
 void	execute_flags_after(t_lem *lem)
 {
+	t_way	*way;
+	int		i;
+
+	if (lem->pflag && lem->var)
+	{
+		ft_printf(COLOR_MAGENTA);
+		ft_printf("\nPATHS:\n");
+		ft_printf(COLOR_RESET);
+		way = lem->var->ways;
+		i = 1;
+		while (way)
+		{
+			ft_printf(COLOR_GREEN);
+			ft_printf("Path #%d", i);
+			ft_printf(COLOR_RESET);
+			ft_lstiter(way->path, &print_node_path);
+			ft_printf("\n");
+			way = way->next;
+			i++;
+		}
+	}
 	if (lem->lflag && lem->var)
 	{
 		ft_printf(COLOR_GREEN);
-		ft_printf("\nLines count:%d\n", lem->var->steps);
+		ft_printf("\nCount of lines: %d\n", lem->var->steps);
 		ft_printf(COLOR_RESET);
 	}
 }
@@ -73,7 +103,8 @@ void	execute_flags_before(t_lem *lem)
 	if (lem->hflag)
 	{
 		ft_printf("Usage: ./lem-in < map\n"
-			"-h -- help\n-l -- lines count\n");
+			"Flags:\n"
+			"-h -- help\n-l -- count of lines\n");
 		free_lem(lem);
 		exit(0);
 	}
