@@ -46,7 +46,8 @@ t_edge	*get_other_edge(t_node *from, t_node *to, t_list *edges, int *running)
 }
 
 /*
-** This function get edge with same from node and same to node and set weight -1 to reversed edge
+** This function get edge with same from node and
+** same to node and set weight -1 to reversed edge
 */
 
 t_edge	*get_edge(t_node *from, t_node *to, t_lem *lem)
@@ -66,7 +67,7 @@ t_edge	*get_edge(t_node *from, t_node *to, t_lem *lem)
 	while (edges && edges->next)
 	{
 		if (running == 2)
-			break;
+			break ;
 		edge = get_other_edge(from, to, edges, &running);
 		if (edge)
 			finded = edge;
@@ -231,8 +232,12 @@ int		start_edges(t_edge *a, t_edge *b)
 	return (0);
 }
 
-t_edge *find_edge_part(t_edge *edge, int (*f)(t_edge *, t_edge *), t_edge *finded, t_list *temp, t_list *prev)
+t_edge	*find_edge_part(t_edge *edge, int (*f)(t_edge *, t_edge *),
+						t_list *temp, t_list *prev)
 {
+	t_edge	*finded;
+
+	finded = temp->content;
 	while (temp)
 	{
 		finded = temp->content;
@@ -248,7 +253,7 @@ t_edge *find_edge_part(t_edge *edge, int (*f)(t_edge *, t_edge *), t_edge *finde
 	return (finded);
 }
 
-t_edge	*find_edge(t_list	**paths, t_edge *edge, int (*f)(t_edge*, t_edge*))//todo norm
+t_edge	*find_edge(t_list **paths, t_edge *edge, int (*f)(t_edge*, t_edge*))
 {
 	t_edge	*finded;
 	t_list	*temp;
@@ -266,7 +271,7 @@ t_edge	*find_edge(t_list	**paths, t_edge *edge, int (*f)(t_edge*, t_edge*))//tod
 			free(temp);
 			return (finded);
 		}
-		return (find_edge_part(edge, f, finded, temp, prev));
+		return (find_edge_part(edge, f, temp, prev));
 	}
 	return (NULL);
 }
@@ -365,7 +370,7 @@ void	delete_dublicates(t_lem *lem)
 	lem->edges = NULL;
 }
 
-void	cpy_back(t_lem *lem, t_list	*temp_list)
+void	cpy_back(t_lem *lem, t_list *temp_list)
 {
 	t_list	*temp;
 
