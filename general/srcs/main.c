@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/10 16:18:39 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/12 15:00:16 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	print_node_path(t_list *list)
 		ft_printf(" %s", node->name);
 }
 
-void	execute_flags_after(t_lem *lem)
+void print_paths_from_solution(t_lem *lem)
 {
 	t_way	*way;
 	int		i;
@@ -90,6 +90,11 @@ void	execute_flags_after(t_lem *lem)
 			i++;
 		}
 	}
+}
+
+void	execute_flags_after(t_lem *lem)
+{
+	print_paths_from_solution(lem);
 	if (lem->lflag && lem->var)
 	{
 		ft_printf(COLOR_GREEN);
@@ -107,6 +112,7 @@ void	execute_flags_before(t_lem *lem)
 			"-h -- help\n-l -- count of lines\n");
 		free_lem(lem);
 		exit(0);
+
 	}
 }
 
@@ -126,4 +132,3 @@ int		main(int ac, char **av)
 	exit(0);
 	return (0);
 }
-

@@ -1,20 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   run_ants.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/12 14:56:41 by sdagger           #+#    #+#             */
+/*   Updated: 2020/09/12 15:11:11 by sdagger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
-
-void			print_ants(t_list *list)
-{
-	t_edge	*edge;
-	t_node	*from;
-	t_node	*to;
-
-	edge = list->content;
-	from = edge->from;
-	to = edge->to;
-	if (to->ant > 0)
-	{
-		ft_printf("L%d-%s", to->ant, to->name);
-		ft_printf(" ");
-	}
-}
 
 int				all_ants_in_finish(t_lem *lem)
 {
@@ -34,7 +30,24 @@ int				all_ants_in_finish(t_lem *lem)
 	return (1);
 }
 
-void			set_node(t_list	*path, t_way *way, t_lem *lem)
+void			set_node_part(t_way *way, t_lem *lem,
+							t_node *node, t_node *next)
+{
+	if (way->ants > 0)
+	{
+		node->ant = ++(lem->i);
+		way->ants--;
+	}
+	else if (way->ants <= 0 && next->ant != -1)
+	{
+		node->ant = -1;
+		next->ant = -1;
+	}
+	else
+		node->ant = next->ant;
+}
+
+void			set_node(t_list *path, t_way *way, t_lem *lem)
 {
 	t_node	*node;
 	t_node	*next;
@@ -46,23 +59,24 @@ void			set_node(t_list	*path, t_way *way, t_lem *lem)
 			next = path->next->content;
 			if (next->s_or_end)
 			{
-				if (way->ants > 0)
-				{
-					node->ant = ++(lem->i);
-					way->ants--;
-				}
-				else if (way->ants <= 0 && next->ant != -1)
-				{
-					node->ant = -1;
-					next->ant = -1;
-				}
-				else
-					node->ant = next->ant;
+				set_node_part(way, lem, node, next);
 			}
 			else
 				node->ant = next->ant;
 			path = path->next;
 		}
+}
+
+int				print_nodes_part(int i, t_node *node)
+{
+	if (node->ant != 0 && node->ant != -1)
+	{
+		if (i != 0)
+			ft_printf(" ");
+		ft_printf("L%d-%s", node->ant, node->name);
+		i++;
+	}
+	return (i);
 }
 
 void			print_nodes(t_lem *lem)
@@ -80,13 +94,7 @@ void			print_nodes(t_lem *lem)
 		while (path)
 		{
 			node = path->content;
-			if (node->ant != 0 && node->ant != -1)
-			{
-				if (i != 0)
-					ft_printf(" ");
-				ft_printf("L%d-%s", node->ant, node->name);
-				i++;
-			}
+			i = print_nodes_part(i, node);
 			path = path->next;
 		}
 		ways = ways->next;
@@ -97,12 +105,9 @@ void			print_nodes(t_lem *lem)
 
 void			run_ants(t_lem *lem)
 {
-	int		n_ants;
 	t_list	*path;
 	t_way	*ways;
-	t_way	*origin_ways;
 
-	n_ants = lem->n_ants;
 	lem->i = 0;
 	ways = lem->var->ways;
 	while (ways)

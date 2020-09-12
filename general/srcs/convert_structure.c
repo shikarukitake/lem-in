@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   convert_structure.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/12 14:54:19 by sdagger           #+#    #+#             */
+/*   Updated: 2020/09/12 15:21:11 by sdagger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
 int			in_neighbors(t_dynamicarr *arr_d, int len, t_node *target)
@@ -38,18 +50,6 @@ void		create_link(t_lem *lem, const char *first, const char *second)
 	}
 }
 
-t_graph		*new_graph(void)
-{
-	t_graph	*graph;
-
-	graph = malloc(sizeof(t_graph));
-	if (graph == NULL)
-		error_f("reading malloc error", 0);
-	graph->nodes = NULL;
-	graph->len = 0;
-	return (graph);
-}
-
 t_node		*get_node(t_read *read, t_lem *lem, t_rooms *rooms, int i)
 {
 	t_node	*node;
@@ -57,12 +57,12 @@ t_node		*get_node(t_read *read, t_lem *lem, t_rooms *rooms, int i)
 	node = new_node_conv(rooms->room, rooms->x, rooms->y);
 	if (!node)
 		error_f("convert_rooms new_node malloc error", 0);
-	if (i == read->start[0])//todo change
+	if (!ft_strcmp(node->name, read->start_name))//todo change
 	{
 		node->s_or_end = 1;
 		lem->graph->start = i;
 	}
-	else if (i == read->end[0])//todo change
+	else if (!ft_strcmp(node->name, read->end_name))//todo change
 	{
 		node->s_or_end = 1;
 		lem->graph->start = i;

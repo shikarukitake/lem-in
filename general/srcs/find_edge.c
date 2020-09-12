@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_edge.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/12 14:56:10 by sdagger           #+#    #+#             */
+/*   Updated: 2020/09/12 15:00:16 by sdagger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
 t_edge	*find_edge_part(t_edge *edge, int (*f)(t_edge *, t_edge *),
@@ -10,7 +22,7 @@ t_edge	*find_edge_part(t_edge *edge, int (*f)(t_edge *, t_edge *),
 	{
 		finded = temp->content;
 		if (f(finded, edge))
-			break;
+			break ;
 		prev = temp;
 		temp = temp->next;
 	}

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   service.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/09/12 14:56:47 by sdagger           #+#    #+#             */
+/*   Updated: 2020/09/12 14:57:32 by sdagger          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lem_in.h"
 
-static t_lem	*init_lem()
+static t_lem	*init_lem(void)
 {
 	t_lem	*lem;
 
@@ -35,18 +47,6 @@ static void		free_graph(t_graph **graph)
 		free((*graph));
 		(*graph) = NULL;
 	}
-}
-
-void			del_l(void *content, size_t size)
-{
-	t_list	*list;
-
-	list = (t_list*)content;
-	ft_lstdel(&list, NULL);
-}
-
-void			free_path(void *path_void, size_t size)
-{
 }
 
 void			free_paths(void *path_void, size_t size)
