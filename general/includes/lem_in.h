@@ -6,7 +6,7 @@
 /*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:54:52 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 15:54:55 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/12 17:20:14 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,10 @@ t_node				*find_node(const char *name, t_graph *graph);
 t_lem				*error_f(char *text, int init);
 void				free_lem(t_lem *lem);
 void				reverse_list(t_list **head_ref);
+t_graph				*new_graph(void);
 
-/*
-** reading
-*/
 
-void				reading(t_lem *lem);
+
 
 /*
 ** solving
@@ -232,22 +230,24 @@ t_node				*find_node_without_delete(t_lem *lem, const char *name);
 ** reading from Bogdan
 */
 
-typedef struct		s_rooms
+typedef struct 		s_rooms
 {
 	char			*room;
 	int				x;
 	int				y;
+	int				cnt;
 	struct s_rooms	*next;
 }					t_rooms;
 
 typedef struct		s_cnct
 {
-	t_rooms			*from;
-	t_rooms			*to;
+	struct s_rooms	*from;
+	struct s_rooms	*to;
 	struct s_cnct	*next;
 }					t_cnct;
 
-typedef struct		s_read
+
+typedef struct 		s_read
 {
 	int				ant_cnt;
 	char			*start_name;
@@ -260,6 +260,21 @@ typedef struct		s_read
 	t_cnct			*conect;
 	int				idx;
 	char			*line;
+	char			*global_line;
 }					t_read;
+
+/*
+** reading
+*/
+t_read				*init_read();
+void				free_read(t_read *head);
+t_rooms				*init_room();
+void				free_rooms(t_rooms *head);
+t_cnct				*init_cnct();
+t_cnct				*add_cnct(t_cnct *head);
+void				free_cnct(t_cnct *head);
+int					reading(t_read *reader);
+
+void				convert_structure(t_read *read, t_lem *lem);
 
 #endif

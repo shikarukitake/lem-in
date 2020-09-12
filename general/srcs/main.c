@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 19:15:11 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 15:00:16 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/12 18:08:16 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,12 +119,21 @@ void	execute_flags_before(t_lem *lem)
 int		main(int ac, char **av)
 {
 	t_lem	*lem;
+	t_read	*reader;
 
 	lem = error_f(NULL, 1);
 	parse_flags_lemin(ac, av, lem);
 	execute_flags_before(lem);
-	reading(lem);//bogdan
+//	reading(lem);//bogdan
 	//print_graph(lem);
+	if (!(reader = init_read()))
+		error_f("reader malloc error", 0);
+	if (reading(reader))
+		error_f("reaging error", 0);
+	convert_structure(reader, lem);
+	write(1, reader->global_line, ft_strlen(reader->global_line));
+	reader->line = NULL;
+	free_read(reader);
 	ft_printf("\n");
 	solve(lem);//ravil
 	execute_flags_after(lem);

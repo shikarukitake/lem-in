@@ -6,11 +6,27 @@
 /*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 14:57:18 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 14:57:32 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/12 17:21:51 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+t_node	*find_node(const char *name, t_graph *graph)
+{
+	int		i;
+	t_node	**nodes;
+
+	i = 0;
+	nodes = graph->nodes->array;
+	while (i != graph->nodes->len)
+	{
+		if (!ft_strcmp(nodes[i]->name, name))
+			return (nodes[i]);
+		i++;
+	}
+	return (NULL);
+}
 
 void	free_node(t_node **node_to_del)
 {
@@ -83,8 +99,8 @@ t_node	*new_node_conv(const char *name, int x, int y)
 		free(new);
 		error_f("new_node name malloc", 0);
 	}
-	new->x = ft_atoi(x);
-	new->y = ft_atoi(y);
+	new->x = x;
+	new->y = y;
 	new->n_len = 0;
 	new->neighbors = NULL;
 	new->in_way = 0;

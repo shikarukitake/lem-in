@@ -3,7 +3,6 @@ NAME_1 = lem-in
 LIBFT_A = libftprintf.a
 
 SR_LI_1 =	main.c \
-			reading.c \
 			service.c \
 			bellman_ford.c \
 			dynamic_array.c \
@@ -25,6 +24,9 @@ SR_LI_1 =	main.c \
 			dublicate_nodes.c \
 			edge_2.c \
 			make_paths.c \
+			reading_b.c \
+			reading_struct_helper.c \
+			convert_structure.c \
 
 SOURCES_DIR = ./general/srcs/
 
@@ -42,7 +44,7 @@ MLX_DIR = ./minilibx
 COMPILER := gcc
 HDRPATH := ./general/includes -I./general/libftprintf/includes -I./minilibx
 IFLAGS := -I$(HDRPATH)
-CFLAGS := -g
+CFLAGS := -g -O2
 
 LIB_DIR = ./general/libftprintf
 LIB_RULE = $(addsuffix .lib, $(LIB_DIR))

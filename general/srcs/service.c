@@ -31,6 +31,7 @@ static t_lem	*init_lem(void)
 		lem->paths = NULL;
 		lem->var = NULL;
 		lem->dflag = 0;
+		lem->origin_edges = NULL;
 		return (lem);
 	}
 }
