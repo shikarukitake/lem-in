@@ -36,7 +36,7 @@ int		ft_lst_pb(t_list **begin_list,
 }
 
 int		ft_lst_pb_copy(t_list **begin_list,
-				  void const *content, size_t content_size)
+					void const *content, size_t content_size)
 {
 	t_list *temporary;
 
