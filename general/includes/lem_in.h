@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sbrynn <sbrynn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:54:52 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 17:20:14 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/18 17:02:10 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,13 @@ void				cpy_array(t_node **dest, t_node **src,
 					int freeornot, int len);
 int					add_darr(t_dynamicarr **arr, t_node *value);
 void				print_darr(t_dynamicarr *arr);
-void				free_d_arr(t_dynamicarr **arr, int free_neight);
+void				free_d_arr(t_dynamicarr **arr);
 
 /*
 ** nodes
 */
 
-void				free_nodes(t_node **arr, int free_neight);
+void				free_nodes(t_node **arr);
 t_node				*new_node(const char *name, const char *x, const char *y);
 void				free_node(t_node **node_to_del);
 t_node				*new_node_conv(const char *name, int x, int y);
@@ -140,9 +140,6 @@ void				free_lem(t_lem *lem);
 void				reverse_list(t_list **head_ref);
 t_graph				*new_graph(void);
 
-
-
-
 /*
 ** solving
 */
@@ -151,7 +148,7 @@ void				solve(t_lem *lem);
 int					bellman_ford(t_lem *lem);
 void				set_in_way(t_lem *lem);
 void				dublicate_nodes(t_lem *lem);
-void				make_paths(t_lem *lem, int suurbale);
+void				make_paths(t_lem *lem);
 void				make_new_paths(t_lem *lem);
 void				make_paths_many(t_lem *lem);
 
@@ -173,6 +170,7 @@ void				refresh_edges(t_lem *lem);
 
 void				count_steps(t_lem *lem, t_var *var);
 void				run_ants(t_lem *lem);
+void				print_nodes(t_lem *lem);
 
 /*
 ** var structure
@@ -227,10 +225,18 @@ t_edge				*find_edge_without_delete(t_lem *lem,
 t_node				*find_node_without_delete(t_lem *lem, const char *name);
 
 /*
+** flags
+*/
+
+void				parse_flags_lemin(int ac, char **av, t_lem *lem);
+void				execute_flags_after(t_lem *lem);
+void				execute_flags_before(t_lem *lem);
+
+/*
 ** reading from Bogdan
 */
 
-typedef struct 		s_rooms
+typedef struct		s_rooms
 {
 	char			*room;
 	int				x;
@@ -246,10 +252,9 @@ typedef struct		s_cnct
 	struct s_cnct	*next;
 }					t_cnct;
 
-
-typedef struct 		s_read
+typedef struct		s_read
 {
-	int				ant_cnt;
+	long			ant_cnt;
 	char			*start_name;
 	char			*end_name;
 	int				start[2];
@@ -271,10 +276,27 @@ void				free_read(t_read *head);
 t_rooms				*init_room();
 void				free_rooms(t_rooms *head);
 t_cnct				*init_cnct();
-t_cnct				*add_cnct(t_cnct *head);
 void				free_cnct(t_cnct *head);
+int					gnl(t_read *reader);
+int					check_after(char	*line, int i);
+int					base_check_room(t_read *reader);
+int					freed(char **line);
+int					add_start_end(t_read *reader);
+int					skip_it(t_read *reader, int flag);
+int					read_name(t_read *reader, char **name, int num);
+int					add_name(t_read *reader, char *tmp, t_cnct *link, int num);
+int					add_link_list(t_read *reader, t_cnct *link);
+int					read_link(t_read *reader);
+int					links(t_read *reader);
+int					read_room_content(t_read *reader, t_rooms *room);
+int					check_room(t_read *reader, t_rooms *room);
+int					add_room_help(t_read *reader, t_rooms *room, int flag);
+int					add_room(t_read *reader, t_rooms *room, int flag);
+int					read_room(t_read *reader, int flag);
+int					rooms(t_read *reader);
+int					first_line(t_read *reader);
 int					reading(t_read *reader);
-
 void				convert_structure(t_read *read, t_lem *lem);
+int					in_neighbors(t_dynamicarr *arr_d, int len, t_node *target);
 
 #endif

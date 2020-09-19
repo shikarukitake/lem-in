@@ -67,42 +67,6 @@ void			set_node(t_list *path, t_way *way, t_lem *lem)
 		}
 }
 
-int				print_nodes_part(int i, t_node *node)
-{
-	if (node->ant != 0 && node->ant != -1)
-	{
-		if (i != 0)
-			ft_printf(" ");
-		ft_printf("L%d-%s", node->ant, node->name);
-		i++;
-	}
-	return (i);
-}
-
-void			print_nodes(t_lem *lem)
-{
-	int		i;
-	t_node	*node;
-	t_list	*path;
-	t_way	*ways;
-
-	ways = lem->var->ways;
-	i = 0;
-	while (ways)
-	{
-		path = ways->path;
-		while (path)
-		{
-			node = path->content;
-			i = print_nodes_part(i, node);
-			path = path->next;
-		}
-		ways = ways->next;
-	}
-	if (i != 0)
-		ft_printf("\n");
-}
-
 void			run_ants(t_lem *lem)
 {
 	t_list	*path;

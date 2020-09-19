@@ -6,7 +6,7 @@
 #    By: sdagger <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/25 14:21:49 by sdagger           #+#    #+#              #
-#    Updated: 2020/08/05 17:24:15 by sdagger          ###   ########.fr        #
+#    Updated: 2020/09/18 16:56:32 by sdagger          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT_DIR = libft
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -O3 -g
+CFLAGS = -Wall -Wextra -Werror -O3
 
 SRC = exp_util.c            \
       color_util.c          \
@@ -155,6 +155,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@ar -rc $(NAME) $(OBJ)
+	@echo "\x1b[32mlibftprintf compiled\x1b[0m"
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -I$(INC) -c -o $@ $<

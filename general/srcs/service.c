@@ -6,7 +6,7 @@
 /*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 14:56:47 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 14:57:32 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/18 16:46:30 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static t_lem	*init_lem(void)
 		lem->origin_edges = NULL;
 		return (lem);
 	}
+	return (NULL);
 }
 
 static void		free_graph(t_graph **graph)
@@ -44,7 +45,7 @@ static void		free_graph(t_graph **graph)
 	if ((*graph))
 	{
 		if ((*graph)->nodes)
-			free_d_arr(&((*graph)->nodes), 1);
+			free_d_arr(&((*graph)->nodes));
 		free((*graph));
 		(*graph) = NULL;
 	}
@@ -52,7 +53,8 @@ static void		free_graph(t_graph **graph)
 
 void			free_paths(void *path_void, size_t size)
 {
-	ft_lstdel(&path_void, &del_edge);
+	size += 0;
+	ft_lstdel((t_list **)&path_void, &del_edge);
 }
 
 void			free_lem(t_lem *lem)

@@ -44,7 +44,7 @@ void	free_node(t_node **node_to_del)
 	*node_to_del = NULL;
 }
 
-void	free_nodes(t_node **arr, int free_neight)
+void	free_nodes(t_node **arr)
 {
 	int	i;
 
@@ -66,7 +66,7 @@ t_node	*new_node(const char *name, const char *x, const char *y)
 	new = malloc(sizeof(t_node));
 	if (new == NULL)
 		error_f("new_node malloc", 0);
-	new->name = name;
+	new->name = (char*)name;
 	if (!new->name)
 	{
 		free(new);
@@ -93,7 +93,7 @@ t_node	*new_node_conv(const char *name, int x, int y)
 	new = malloc(sizeof(t_node));
 	if (new == NULL)
 		error_f("new_node malloc", 0);
-	new->name = name;
+	new->name = (char*)name;
 	if (!new->name)
 	{
 		free(new);

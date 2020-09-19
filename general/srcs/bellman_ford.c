@@ -6,13 +6,13 @@
 /*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 14:53:58 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 14:53:58 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/18 16:57:41 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int		relax_edge(t_edge *edge, t_lem *lem)
+int		relax_edge(t_edge *edge)
 {
 	int		dist_v;
 	int		dist_u;
@@ -32,7 +32,6 @@ int		relax_edge(t_edge *edge, t_lem *lem)
 
 void	zero_weight(t_lem *lem)
 {
-	t_list	*edges;
 	int		i;
 
 	i = 0;
@@ -65,7 +64,7 @@ int		bellman_ford(t_lem *lem)
 		r = FT_FALSE;
 		while (edges)
 		{
-			r_temp = relax_edge(edges->content, lem);
+			r_temp = relax_edge(edges->content);
 			if (!r)
 				r = r_temp;
 			edges = edges->next;

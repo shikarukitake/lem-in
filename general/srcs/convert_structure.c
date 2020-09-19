@@ -12,26 +12,6 @@
 
 #include "lem_in.h"
 
-int			in_neighbors(t_dynamicarr *arr_d, int len, t_node *target)
-{
-	int		i;
-	t_node	**arr;
-
-	if (arr_d == FT_NULL)
-		return (0);
-	arr = arr_d->array;
-	i = 0;
-	if (len == 0)
-		return (0);
-	while (arr[i])
-	{
-		if (arr[i] == target)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 void		create_link(t_lem *lem, const char *first, const char *second)
 {
 	t_node	*f;
@@ -58,12 +38,12 @@ t_node		*get_node(t_read *read, t_lem *lem, t_rooms *rooms, int i)
 	node = new_node_conv(ft_strdup(rooms->room), rooms->x, rooms->y);
 	if (!node)
 		error_f("convert_rooms new_node malloc error", 0);
-	if (!ft_strcmp(node->name, read->start_name))//todo change
+	if (!ft_strcmp(node->name, read->start_name))
 	{
 		node->s_or_end = 1;
 		lem->graph->start = i;
 	}
-	else if (!ft_strcmp(node->name, read->end_name))//todo change
+	else if (!ft_strcmp(node->name, read->end_name))
 	{
 		node->s_or_end = 1;
 		lem->graph->end = i;
@@ -71,7 +51,7 @@ t_node		*get_node(t_read *read, t_lem *lem, t_rooms *rooms, int i)
 	return (node);
 }
 
-void	convert_rooms(t_read *read, t_lem *lem)
+void		convert_rooms(t_read *read, t_lem *lem)
 {
 	t_rooms	*rooms;
 	t_node	*node;
@@ -91,7 +71,7 @@ void	convert_rooms(t_read *read, t_lem *lem)
 	}
 }
 
-void convert_links(t_read *read, t_lem *lem)
+void		convert_links(t_read *read, t_lem *lem)
 {
 	t_cnct	*cntc;
 
@@ -103,7 +83,7 @@ void convert_links(t_read *read, t_lem *lem)
 	}
 }
 
-void	convert_structure(t_read *read, t_lem *lem)
+void		convert_structure(t_read *read, t_lem *lem)
 {
 	lem->n_ants = read->ant_cnt;
 	convert_rooms(read, lem);

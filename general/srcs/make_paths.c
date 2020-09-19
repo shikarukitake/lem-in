@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-void	make_paths(t_lem *lem, int suurbale)
+void	make_paths(t_lem *lem)
 {
 	t_list	*path;
 	t_node	*node;

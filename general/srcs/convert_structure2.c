@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   convert_structure2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/03 16:41:41 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/03 17:54:24 by sdagger          ###   ########.fr       */
+/*   Created: 2020/09/13 15:20:08 by sdagger           #+#    #+#             */
+/*   Updated: 2020/09/13 15:20:15 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "lem_in.h"
 
-void		ft_error(void)
+int			in_neighbors(t_dynamicarr *arr_d, int len, t_node *target)
 {
-	write(2, "ERROR\n", 6);
-	exit(1);
-}
+	int		i;
+	t_node	**arr;
 
-void		ft_error_t(char const *text)
-{
-	write(2, "ERROR\n", 6);
-	write(2, text, ft_strlen(text));
-	write(2, "\n", 1);
-	exit(1);
+	if (arr_d == FT_NULL)
+		return (0);
+	arr = arr_d->array;
+	i = 0;
+	if (len == 0)
+		return (0);
+	while (arr[i])
+	{
+		if (arr[i] == target)
+			return (1);
+		i++;
+	}
+	return (0);
 }

@@ -26,7 +26,14 @@ SR_LI_1 =	main.c \
 			make_paths.c \
 			reading_b.c \
 			reading_struct_helper.c \
+			reading_room.c \
+			reading_link.c \
+			reading_help_functions.c \
+			reading_check_after.c \
 			convert_structure.c \
+			flags.c \
+			print_nodes.c \
+			convert_structure2.c \
 
 SOURCES_DIR = ./general/srcs/
 
@@ -44,7 +51,7 @@ MLX_DIR = ./minilibx
 COMPILER := gcc
 HDRPATH := ./general/includes -I./general/libftprintf/includes -I./minilibx
 IFLAGS := -I$(HDRPATH)
-CFLAGS := -g -O2
+CFLAGS := -Wall -Wextra -Werror -O2
 
 LIB_DIR = ./general/libftprintf
 LIB_RULE = $(addsuffix .lib, $(LIB_DIR))
@@ -60,7 +67,7 @@ all: $(LIB_RULE) $(NAME_1)
 
 $(NAME_1): $(LIBFT) $(OBJECT_DIR_1) $(OBJ_LI_1)
 	@$(COMPILER) $(CFLAGS) $(IFLAGS) $(LIBFT) $(OBJ_LI_1) -o $(NAME_1)
-
+	@echo "\x1b[32mlem-in compiled\x1b[0m"
 $(OBJECT_DIR_1):
 	@mkdir -p $(OBJECT_DIR_1)
 

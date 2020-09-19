@@ -45,7 +45,6 @@ void	get_find_edge(t_lem *lem, t_edge *edge, t_list **temp_list)
 void	delete_disjoint_edges(t_lem *lem)
 {
 	t_edge	*edge;
-	t_edge	*temp;
 	t_list	*temp_list;
 
 	temp_list = NULL;

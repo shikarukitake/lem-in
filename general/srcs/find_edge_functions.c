@@ -6,7 +6,7 @@
 /*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 14:56:15 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 14:57:32 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/18 16:53:07 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,25 @@ int		disjoint_edge(t_edge *a, t_edge *b)
 
 int		in_way_edge(t_edge *a, t_edge *b)
 {
-	if (a->from->in_way > 2 && a->to->in_way > 2)
+	if (b == NULL)
 	{
-		if (a->from->s_or_end || a->to->s_or_end)
-			return (0);
-		else
-			return (1);
+		if (a->from->in_way > 2 && a->to->in_way > 2)
+		{
+			if (a->from->s_or_end || a->to->s_or_end)
+				return (0);
+			else
+				return (1);
+		}
 	}
-	else
-		return (0);
+	return (0);
 }
 
 int		start_edges(t_edge *a, t_edge *b)
 {
-	if (a->from->s_or_end)
-		return (1);
+	if (b == NULL)
+	{
+		if (a->from->s_or_end)
+			return (1);
+	}
 	return (0);
 }

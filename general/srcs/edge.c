@@ -26,6 +26,7 @@ void	del_edge(void *edge_addr, size_t size)
 {
 	t_edge	*edge;
 
+	size += 0;
 	edge = (t_edge*)edge_addr;
 	free(edge);
 }

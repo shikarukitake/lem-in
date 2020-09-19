@@ -6,7 +6,7 @@
 /*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 14:55:00 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 14:55:20 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/18 16:50:30 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_way	*new_way(void)
 	return (new);
 }
 
-void	insert_node(t_lem *lem, t_list **new_path, t_edge *edge, int end)
+void	insert_node(t_list **new_path, t_edge *edge, int end)
 {
 	t_node	*from;
 	t_node	*to;
@@ -41,16 +41,16 @@ void	insert_node(t_lem *lem, t_list **new_path, t_edge *edge, int end)
 			error_f("insert_node ft_lstnew malloc", 0);
 }
 
-void	copy_path_part(t_lem *lem, t_list *path, t_list **new_path, int *i)
+void	copy_path_part(t_list *path, t_list **new_path, int *i)
 {
 	(*new_path) = NULL;
 	(*i) = 0;
 	while (path)
 	{
 		if (path->next)
-			insert_node(lem, new_path, path->content, 0);
+			insert_node(new_path, path->content, 0);
 		else
-			insert_node(lem, new_path, path->content, 1);
+			insert_node(new_path, path->content, 1);
 		path = path->next;
 		(*i)++;
 	}
@@ -70,7 +70,7 @@ void	copy_paths(t_lem *lem)
 	while (paths)
 	{
 		path = paths->content;
-		copy_path_part(lem, path, &new_path, &i);
+		copy_path_part(path, &new_path, &i);
 		paths = paths->next;
 		temp->path = new_path;
 		temp->len = i;

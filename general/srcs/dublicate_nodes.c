@@ -6,13 +6,13 @@
 /*   By: sdagger <sdagger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 14:55:33 by sdagger           #+#    #+#             */
-/*   Updated: 2020/09/12 14:55:33 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/18 16:36:38 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	create_copy(t_lem *lem, t_edge *edge_dub)
+void	create_copy(t_edge *edge_dub)
 {
 	t_node	*copy;
 	t_node	*current;
@@ -69,7 +69,7 @@ void	dublicate_node(t_lem *lem, t_edge *edge_dub)
 	t_edge	*edge;
 
 	edges = lem->edges;
-	create_copy(lem, edge_dub);
+	create_copy(edge_dub);
 	while (edges)
 	{
 		edge = edges->content;
@@ -95,11 +95,12 @@ void	dublicate_nodes(t_lem *lem)
 	while (paths)
 	{
 		path = ((t_list*)(paths->content))->next;
-		while (path->next)
-		{
-			dublicate_node(lem, path->content);
-			path = path->next;
-		}
+		if (path)
+			while (path->next)
+			{
+				dublicate_node(lem, path->content);
+				path = path->next;
+			}
 		paths = paths->next;
 	}
 }

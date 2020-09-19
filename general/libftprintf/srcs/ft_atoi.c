@@ -6,7 +6,7 @@
 /*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 19:49:40 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/03 17:54:24 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/12 22:28:06 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ static long			make_int_l(const char *str, long long q, int i, int neg)
 		i++;
 		j++;
 	}
-	if (j >= 14)
-		return (2147483650);
+	if (j >= 14 || q > FT_INT_MAX || q < FT_INT_MIN)
+		return (FT_INT_MIN - 20);
 	else
 		return (q * neg);
 	return (q);

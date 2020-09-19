@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   reading_check_after.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sbrynn <sbrynn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/03 16:41:41 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/03 17:54:24 by sdagger          ###   ########.fr       */
+/*   Created: 2020/09/13 14:37:50 by sbrynn            #+#    #+#             */
+/*   Updated: 2020/09/13 14:39:14 by sbrynn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "lem_in.h"
 
-void		ft_error(void)
+int	check_after(char *line, int i)
 {
-	write(2, "ERROR\n", 6);
-	exit(1);
-}
-
-void		ft_error_t(char const *text)
-{
-	write(2, "ERROR\n", 6);
-	write(2, text, ft_strlen(text));
-	write(2, "\n", 1);
-	exit(1);
+	if (line[i] == '-')
+		i++;
+	while (line[i])
+	{
+		if (line[i] < '0' || line[i] > '9')
+			return (1);
+		i++;
+	}
+	return (0);
 }

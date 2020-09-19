@@ -1,65 +1,75 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdagger <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sbrynn <sbrynn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 19:03:26 by sdagger           #+#    #+#             */
-/*   Updated: 2020/08/30 19:35:55 by sdagger          ###   ########.fr       */
+/*   Updated: 2020/09/12 22:23:52 by sdagger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <limits.h>
 
-static int	ft_line_maker(const int fd, char **help, char **line)
+static int	appendline(char **s, char **line)
 {
-	size_t	len;
-	char	*iter;
+	int		len;
+	char	*tmp;
 
 	len = 0;
-	while (help[fd][len] != '\0' && help[fd][len] != '\n')
+	while ((*s)[len] != '\n' && (*s)[len] != '\0')
 		len++;
-	if (help[fd][len] == '\n')
+	if ((*s)[len] == '\n')
 	{
-		*line = ft_strsub(help[fd], 0, len);
-		iter = ft_strsub(help[fd], len + 1, ft_strlen(help[fd]) - len);
-		free(help[fd]);
-		help[fd] = ft_strdup(iter);
-		free(iter);
+		*line = ft_strsub(*s, 0, len);
+		tmp = ft_strdup(&((*s)[len + 1]));
+		free(*s);
+		*s = tmp;
+		if ((*s)[0] == '\0')
+			ft_strdel(s);
 	}
-	else if (help[fd][len] == '\0')
+	else
 	{
-		*line = ft_strdup(help[fd]);
-		ft_strdel(&help[fd]);
+		*line = ft_strdup(*s);
+		ft_strdel(s);
 	}
 	return (1);
 }
 
+static int	output(char **s, char **line, int ret, int fd)
+{
+	if (ret < 0)
+		return (-1);
+	else if (ret == 0 && s[fd] == NULL)
+		return (0);
+	else
+		return (appendline(&s[fd], line));
+}
+
 int			ft_get_next_line(const int fd, char **line)
 {
-	static char	*help[OPEN_MAX];
+	int			ret;
+	static char	*s[256];
 	char		buff[BUFF_SIZE + 1];
-	char		*iter;
-	int			rdr;
+	char		*tmp;
 
 	if (fd < 0 || line == NULL)
 		return (-1);
-	while ((rdr = read(fd, buff, BUFF_SIZE + 1)) > 0)
+	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
 	{
-		buff[rdr] = '\0';
-		if (help[fd] == NULL)
-			help[fd] = ft_strnew(1);
-		iter = ft_strjoin(help[fd], buff);
-		free(help[fd]);
-		help[fd] = iter;
-		if (ft_strchr(help[fd], '\n'))
+		buff[ret] = '\0';
+		if (s[fd] == NULL)
+			s[fd] = ft_strdup(buff);
+		else
+		{
+			tmp = ft_strjoin(s[fd], buff);
+			free(s[fd]);
+			s[fd] = tmp;
+		}
+		if (ft_strchr(s[fd], '\n'))
 			break ;
 	}
-	if (rdr < 0)
-		return (-1);
-	if (rdr == 0 && (help[fd] == NULL || help[fd][0] == '\0'))
-		return (0);
-	return (ft_line_maker(fd, help, line));
+	return (output(s, line, ret, fd));
 }
